@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Abstract Node Network</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-animations">
+    @keyframes pulse-glow {
+      0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+  </style>
+<style data-purpose="background-styles">
+    body {
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    .bg-image-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .bg-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body class="min-h-screen relative flex flex-col justify-center items-center">
+<!-- BEGIN: Background Layer -->
+<div class="bg-image-container" data-purpose="background-layer">
+<!-- Using the provided image as the primary visual background -->
+<img alt="Abstract node network with central light burst" class="animate-pulse-glow" src="https://lh3.googleusercontent.com/aida/ADBb0uh2Z9piPjsy35ssPRLqGu4eR3UcFVY-K5YP0bYbAZbeD9tGMOO7REzxdUA0TKDIy3LU70ihNJnpxMPVqMZf6VzYSkVUSLyQ1TLwawLpYaInz1HUH7w8NqEhobfli6DEky2azycMay3-5WKXn2XWNw8luMOTwDvMHMaWBjXuREQnNI4K6QJoyAt7HJV4RQq4bgO2AeRBdYlXQZnZvbPQwf855DW8p0hflAU8vjlIqeJrZYPFwDePvI8Yl2KAEPqx1qorctJkPebZMw"/>
+</div>
+<!-- END: Background Layer -->
+<!-- BEGIN: Main Content Area (Overlaying the background) -->
+<main class="relative z-10 w-full max-w-4xl px-6 md:px-12 flex flex-col items-center text-center h-full justify-center mt-64 md:mt-96 lg:mt-auto" data-purpose="main-content">
+<!-- Decorative hidden elements for screen readers or subtle overlays if needed -->
+<div class="sr-only">
+<h1>Data Nexus Configuration</h1>
+<p>Interactive abstract representation of a central node connecting various data points.</p>
+</div>
+<!-- Example interactive or informative overlay elements for tablet view -->
+<div class="mt-auto pb-12 opacity-80 hover:opacity-100 transition-opacity duration-300">
+<h2 class="text-xl md:text-3xl font-light tracking-widest uppercase mb-4 text-white/90">Initialize Sequence</h2>
+<button class="px-8 py-3 bg-transparent border border-white/30 rounded-full text-sm tracking-wider uppercase hover:bg-white/10 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm">
+        Connect
+      </button>
+</div>
+</main>
+<!-- END: Main Content Area -->
+<!-- BEGIN: Overlay Gradients for Depth -->
+<div class="absolute inset-0 pointer-events-none z-0" data-purpose="depth-gradients">
+<!-- Adds a subtle vignette effect -->
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black/80"></div>
+</div>
+<!-- END: Overlay Gradients for Depth -->
+</body></html>

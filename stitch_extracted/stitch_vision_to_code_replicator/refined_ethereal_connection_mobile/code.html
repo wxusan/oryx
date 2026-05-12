@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Luminous Wing Pattern</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="core-styles">
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      overflow: hidden;
+    }
+
+    .bg-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 50% 65%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    }
+
+    .hero-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)) contrast(1.2) brightness(1.1);
+    }
+    
+    .overlay-glow {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 20%, transparent 60%);
+      pointer-events: none;
+      z-index: 10;
+      mix-blend-mode: plus-lighter;
+    }
+  </style>
+</head>
+<body>
+<!-- BEGIN: MainContent -->
+<main class="bg-container" data-purpose="main-wrapper">
+<!-- SVG Filters for glow effects -->
+<svg aria-hidden="true" focusable="false" style="width:0;height:0;position:absolute;">
+<defs>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stddeviation="2.5"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+</svg>
+<!-- Starburst Enhancement -->
+<div class="overlay-glow"></div>
+<!-- Luminous Wing Pattern Image -->
+<img alt="Luminous symmetrical winged light pattern emerging from a central starburst on a black background with faint geometric lines and starry dots" class="hero-image" data-purpose="background-artwork" src="https://lh3.googleusercontent.com/aida/ADBb0uiQevu9M7BSFjRmAdmKMx2GX6mr-iqFUpi7wjnnmnKyVSDVUc5k3Yj4GGzizYwoKSf3XHTtTi9wjRmySFNErPMarL5oz14yXLNfWU954okKwmbtP3Mlnd8VaqXs9cEsH4jl1TzU0VyCZwKCbBVo2KUCWWxyeJrzwQg1we-KZtqK1Pnhi7UV4eEzpk_w-2_2Nk21U1JD9gfvDsp8zhSpoys94tD_tWyLy4e7BulvYOUrzdV5WxHUZ3Tk_2nmgQcQCzS1M2yb_vAi0g" style="filter: url(#glow) contrast(1.2) brightness(1.2);"/>
+</main>
+<!-- END: MainContent -->
+</body></html>
