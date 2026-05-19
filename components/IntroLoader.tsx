@@ -75,19 +75,38 @@ function TerminalLine({
   );
 }
 
+type FlickerState = "none" | "black" | "white";
+
 export function IntroLoader({ onComplete }: IntroLoaderProps) {
   const [visible, setVisible] = useState(true);
-  const [stage, setStage] = useState(0);
+  const [stage,   setStage]   = useState(0);
+  const [flicker, setFlicker] = useState<FlickerState>("none");
 
   useEffect(() => {
     const timers = [
-      window.setTimeout(() => setStage(1), 250),
-      window.setTimeout(() => setStage(2), 950),
+      // Boot sequence
+      window.setTimeout(() => setStage(1),  250),
+      window.setTimeout(() => setStage(2),  950),
       window.setTimeout(() => setStage(3), 1650),
       window.setTimeout(() => setStage(4), 2200),
       window.setTimeout(() => setStage(5), 2580),
-      window.setTimeout(() => setVisible(false), 3500),
-      window.setTimeout(onComplete, 4070),
+
+      // Power-death flicker — blinks get shorter each time
+      window.setTimeout(() => setFlicker("black"),  2920),
+      window.setTimeout(() => setFlicker("none"),   2985),  // 65ms
+      window.setTimeout(() => setFlicker("black"),  3070),
+      window.setTimeout(() => setFlicker("none"),   3125),  // 55ms
+      window.setTimeout(() => setFlicker("black"),  3200),
+      window.setTimeout(() => setFlicker("none"),   3240),  // 40ms
+      window.setTimeout(() => setFlicker("black"),  3300),
+      window.setTimeout(() => setFlicker("none"),   3330),  // 30ms
+      // Final white surge — last gasp before shutdown
+      window.setTimeout(() => setFlicker("white"),  3390),
+      window.setTimeout(() => setFlicker("none"),   3470),  // 80ms
+
+      // Blur fade into homepage
+      window.setTimeout(() => setVisible(false), 3580),
+      window.setTimeout(onComplete,              4160),
     ];
 
     return () => timers.forEach(window.clearTimeout);
@@ -138,6 +157,17 @@ export function IntroLoader({ onComplete }: IntroLoaderProps) {
               />
             </div>
           </div>
+
+          {/* Flicker overlay — hard cuts, zero CSS transition */}
+          {flicker !== "none" && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-20"
+              style={{
+                background: flicker === "black" ? "#020202" : "rgba(246,246,247,0.92)",
+              }}
+            />
+          )}
         </motion.section>
       )}
     </AnimatePresence>
