@@ -1,19 +1,19 @@
 "use client";
 
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const MAX_PHASE = 3;
+const MAX_PHASE        = 3;
 const ANIMATION_LOCK_MS = 900;
-const SCENE_TRANSITION = { duration: 0.82, ease: [0.22, 1, 0.36, 1] as const };
-const UI_TRANSITION    = { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const };
+const SCENE_TRANSITION  = { duration: 0.82, ease: [0.22, 1, 0.36, 1] as const };
+const UI_TRANSITION     = { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type OverlayItem = { label: string; value?: string; delta?: string; x: string; y: string };
-type SceneData   = { index: number; photo: string; num: string; title: string; subtitle: string; overlays: OverlayItem[] };
+type OverlayItem  = { label: string; value?: string; delta?: string; x: string; y: string };
+type SceneData    = { index: number; photo: string; num: string; title: string; subtitle: string; overlays: OverlayItem[] };
 type ServiceEntry = { id: string; title: string; subtitle?: string; desc: string };
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -78,7 +78,7 @@ const SCENE_DATA: SceneData[] = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function phaseToServiceIndex(phase: number): number {
+function phaseToServiceIndex(phase: number) {
   if (phase <= 1) return 0;
   if (phase === 2) return 1;
   return 2;
@@ -86,18 +86,16 @@ function phaseToServiceIndex(phase: number): number {
 
 function getSceneTarget(sceneIndex: number, phase: number) {
   const activeAt = sceneIndex + 1;
-  if (phase < activeAt)  return { x: "118%",  rotateY: -22, opacity: 0 };
-  if (phase === activeAt) return { x: "0%",   rotateY:   0, opacity: 1 };
+  if (phase < activeAt)   return { x: "118%",  rotateY: -22, opacity: 0 };
+  if (phase === activeAt) return { x: "0%",    rotateY:   0, opacity: 1 };
   return                         { x: "-118%", rotateY:  22, opacity: 0 };
 }
 
-// ─── VerticalSpine ────────────────────────────────────────────────────────────
+// ─── VerticalSpine (desktop only) ─────────────────────────────────────────────
 
 function VerticalSpine({ phase }: { phase: number }) {
   return (
-    <motion.div
-      aria-hidden
-      className="pointer-events-none absolute inset-y-0"
+    <motion.div aria-hidden className="pointer-events-none absolute inset-y-0"
       style={{ left: "38%", width: "1px" }}
       animate={{ opacity: phase >= 1 ? 1 : 0 }}
       transition={{ duration: 0.9, ease: "easeOut" }}
@@ -137,18 +135,16 @@ function SceneOverlayTag({ item }: { item: OverlayItem }) {
   );
 }
 
-// ─── Scene ────────────────────────────────────────────────────────────────────
+// ─── Desktop Scene ────────────────────────────────────────────────────────────
 
-function Scene({ data, phase }: { data: SceneData; phase: number }) {
+function DesktopScene({ data, phase }: { data: SceneData; phase: number }) {
   const reduceMotion = useReducedMotion();
   const target = getSceneTarget(data.index, phase);
-  const animTarget = reduceMotion ? { opacity: target.opacity } : target;
 
   return (
-    <motion.div
-      className="absolute inset-0 flex items-center justify-center px-[2vw]"
+    <motion.div className="absolute inset-0 flex items-center justify-center px-[2vw]"
       initial={false}
-      animate={animTarget}
+      animate={reduceMotion ? { opacity: target.opacity } : target}
       transition={SCENE_TRANSITION}
     >
       <div className="relative overflow-hidden shrink-0" style={{
@@ -156,33 +152,21 @@ function Scene({ data, phase }: { data: SceneData; phase: number }) {
         border: "1px solid rgba(255,255,255,0.10)",
         boxShadow: "0 0 160px rgba(0,0,0,0.88), 0 32px 64px rgba(0,0,0,0.72), 0 8px 20px rgba(0,0,0,0.58)",
       }}>
-        <img src={data.photo} alt={data.title}
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.96) contrast(1.02) saturate(0.93)" }}
-          loading="lazy" decoding="async" />
-
-        {/* Light cinematic gradient — much less dark than before */}
+        <img src={data.photo} alt={data.title} className="absolute inset-0 h-full w-full object-cover"
+          style={{ filter: "brightness(0.96) contrast(1.02) saturate(0.93)" }} loading="lazy" decoding="async" />
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: [
-            "linear-gradient(135deg, rgba(2,2,2,0.42) 0%, rgba(2,2,2,0.0) 45%, rgba(2,2,2,0.22) 100%)",
-            "linear-gradient(0deg, rgba(2,2,2,0.30) 0%, transparent 18%)",
-            "linear-gradient(90deg, rgba(2,2,2,0.18) 0%, transparent 14%)",
-          ].join(", "),
+          background: ["linear-gradient(135deg,rgba(2,2,2,0.42) 0%,rgba(2,2,2,0.0) 45%,rgba(2,2,2,0.22) 100%)", "linear-gradient(0deg,rgba(2,2,2,0.30) 0%,transparent 18%)", "linear-gradient(90deg,rgba(2,2,2,0.18) 0%,transparent 14%)"].join(", "),
         }} />
-
         <div className="absolute left-5 top-5 z-10">
           <span className="block mb-2" style={{ fontSize: "9px", letterSpacing: "0.28em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>&gt; {data.num}</span>
-          <h3 className="font-display font-semibold leading-tight text-oryx-white" style={{ fontSize: "clamp(18px, 1.8vw, 26px)" }}>{data.title}</h3>
+          <h3 className="font-display font-semibold leading-tight text-oryx-white" style={{ fontSize: "clamp(18px,1.8vw,26px)" }}>{data.title}</h3>
           <p style={{ fontSize: "11px", color: "#8b8b8f", marginTop: "4px", fontFamily: "var(--font-jetbrains),monospace" }}>{data.subtitle}</p>
         </div>
-
         {data.overlays.map((item, i) => <SceneOverlayTag key={i} item={item} />)}
-
         <div aria-hidden className="absolute top-3 right-3 pointer-events-none"
           style={{ width: "14px", height: "14px", borderTop: "1px solid rgba(255,255,255,0.24)", borderRight: "1px solid rgba(255,255,255,0.24)" }} />
         <div aria-hidden className="absolute bottom-3 left-3 pointer-events-none"
           style={{ width: "14px", height: "14px", borderBottom: "1px solid rgba(255,255,255,0.24)", borderLeft: "1px solid rgba(255,255,255,0.24)" }} />
-
         <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full mix-blend-soft-light" style={{ opacity: 0.032 }}>
           <filter id={`sg${data.index}`}>
             <feTurbulence type="fractalNoise" baseFrequency="1.7" numOctaves="2" stitchTiles="stitch" />
@@ -195,7 +179,64 @@ function Scene({ data, phase }: { data: SceneData; phase: number }) {
   );
 }
 
-// ─── ServiceListItem ──────────────────────────────────────────────────────────
+// ─── Mobile Scene ─────────────────────────────────────────────────────────────
+// No rotateY, full-width, 2 label tags + 2 stat cards only
+
+function MobileScene({ data, phase }: { data: SceneData; phase: number }) {
+  const target = getSceneTarget(data.index, phase);
+  const labels = data.overlays.filter(o => !o.value).slice(0, 2);
+  const stats  = data.overlays.filter(o =>  o.value).slice(0, 2);
+
+  return (
+    <motion.div
+      className="absolute inset-0 flex items-stretch px-4 pb-4 pt-2"
+      initial={false}
+      animate={{ x: target.x, opacity: target.opacity }}
+      transition={SCENE_TRANSITION}
+    >
+      <div className="relative flex-1 overflow-hidden rounded-lg" style={{
+        border: "1px solid rgba(255,255,255,0.11)",
+        boxShadow: "0 8px 40px rgba(0,0,0,0.72), 0 2px 8px rgba(0,0,0,0.5)",
+      }}>
+        <img src={data.photo} alt={data.title} className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: "brightness(0.96) contrast(1.02) saturate(0.93)" }} loading="lazy" />
+
+        {/* Gradient — only bottom edge, keep image bright */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: "linear-gradient(0deg,rgba(2,2,2,0.55) 0%,rgba(2,2,2,0.10) 35%,transparent 60%)",
+        }} />
+
+        {/* Top label tags */}
+        <div className="absolute top-3 left-3 right-3 z-10 flex justify-between">
+          {labels.map((item, i) => (
+            <div key={i} style={{ padding: "4px 8px", background: "rgba(2,2,2,0.72)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "3px", backdropFilter: "blur(6px)" }}>
+              <p style={{ fontSize: "8px", letterSpacing: "0.18em", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", lineHeight: 1 }}>&gt; {item.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom stat cards */}
+        <div className="absolute bottom-3 left-3 right-3 z-10 flex gap-2">
+          {stats.map((item, i) => (
+            <div key={i} style={{ flex: 1, padding: "7px 9px", background: "rgba(2,2,2,0.78)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: "3px", backdropFilter: "blur(8px)" }}>
+              <p style={{ fontSize: "8px", letterSpacing: "0.18em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace", lineHeight: 1, marginBottom: "5px" }}>{item.label}</p>
+              <p style={{ fontSize: "15px", color: "#f6f6f7", fontFamily: "var(--font-jetbrains),monospace", lineHeight: 1 }}>{item.value}</p>
+              <p style={{ fontSize: "9px", lineHeight: 1, marginTop: "4px", fontFamily: "var(--font-jetbrains),monospace", color: "#5aaa5a" }}>{item.delta}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Corner brackets */}
+        <div aria-hidden className="absolute top-2.5 right-2.5 pointer-events-none"
+          style={{ width: "12px", height: "12px", borderTop: "1px solid rgba(255,255,255,0.22)", borderRight: "1px solid rgba(255,255,255,0.22)" }} />
+        <div aria-hidden className="absolute bottom-2.5 left-2.5 pointer-events-none"
+          style={{ width: "12px", height: "12px", borderBottom: "1px solid rgba(255,255,255,0.22)", borderLeft: "1px solid rgba(255,255,255,0.22)" }} />
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Desktop ServiceListItem ──────────────────────────────────────────────────
 
 function ServiceListItem({ service, isActive, isPast }: { service: ServiceEntry; isActive: boolean; isPast: boolean }) {
   return (
@@ -228,13 +269,33 @@ function ServiceListItem({ service, isActive, isPast }: { service: ServiceEntry;
   );
 }
 
+// ─── Progress strip (shared) ──────────────────────────────────────────────────
+
+function ProgressStrip({ activeIdx }: { activeIdx: number }) {
+  return (
+    <div className="flex items-center gap-2">
+      {SERVICES.map((_, i) => (
+        <div key={i} className="rounded-[1px] transition-all duration-500 ease-in-out" style={{
+          height: "2px",
+          width: activeIdx === i ? "32px" : "10px",
+          background: activeIdx === i ? "rgba(255,255,255,0.88)" : activeIdx > i ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.09)",
+        }} />
+      ))}
+      <span className="ml-1" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
+        0{activeIdx + 1} / 03
+      </span>
+    </div>
+  );
+}
+
 // ─── BuildStack ───────────────────────────────────────────────────────────────
 
 export function BuildStack() {
-  const containerRef   = useRef<HTMLDivElement>(null);
-  const phaseRef       = useRef(0);
-  const isAnimatingRef = useRef(false);
-  const inViewRef      = useRef(false);
+  const containerRef    = useRef<HTMLDivElement>(null);
+  const phaseRef        = useRef(0);
+  const isAnimatingRef  = useRef(false);
+  const inViewRef       = useRef(false);
+  const touchStartYRef  = useRef(0);
   const [phase, setPhase] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -242,37 +303,42 @@ export function BuildStack() {
     offset: ["start start", "end end"],
   });
 
-  // Phase gate: only advance 1 step at a time, lock during animation
+  // ── Advance phase (shared logic) ────────────────────────────────────────────
+  const tryAdvance = (direction: 1 | -1) => {
+    if (isAnimatingRef.current) return;
+    const next = Math.max(0, Math.min(MAX_PHASE, phaseRef.current + direction));
+    if (next === phaseRef.current) return;
+    phaseRef.current = next;
+    setPhase(next);
+    isAnimatingRef.current = true;
+    setTimeout(() => { isAnimatingRef.current = false; }, ANIMATION_LOCK_MS);
+  };
+
+  // ── Desktop: scroll-position–driven phase gate ──────────────────────────────
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     if (isAnimatingRef.current) return;
-
     let target = 0;
     if (v >= 0.66) target = 3;
     else if (v >= 0.38) target = 2;
     else if (v >= 0.08) target = 1;
-
     const next = Math.min(phaseRef.current + 1, Math.max(phaseRef.current - 1, target));
     if (next === phaseRef.current) return;
-
     phaseRef.current = next;
     setPhase(next);
     isAnimatingRef.current = true;
     setTimeout(() => { isAnimatingRef.current = false; }, ANIMATION_LOCK_MS);
   });
 
-  // Track in-view for the wheel lock
+  // ── In-view detection ───────────────────────────────────────────────────────
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { inViewRef.current = e.isIntersecting; },
-      { threshold: 0.1 },
-    );
+    const obs = new IntersectionObserver(([e]) => { inViewRef.current = e.isIntersecting; }, { threshold: 0.1 });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
-  // Lock wheel scroll during animation so position doesn't advance while card is moving
+  // ── Desktop: wheel lock during animation ────────────────────────────────────
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (inViewRef.current && isAnimatingRef.current) e.preventDefault();
@@ -281,18 +347,44 @@ export function BuildStack() {
     return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
+  // ── Mobile: swipe-to-advance + lock during animation ────────────────────────
+  useEffect(() => {
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartYRef.current = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (inViewRef.current && isAnimatingRef.current) e.preventDefault();
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!inViewRef.current) return;
+      const delta = touchStartYRef.current - e.changedTouches[0].clientY;
+      if (Math.abs(delta) < 48) return;
+      tryAdvance(delta > 0 ? 1 : -1);
+    };
+
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove",  onTouchMove,  { passive: false });
+    window.addEventListener("touchend",   onTouchEnd,   { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove",  onTouchMove);
+      window.removeEventListener("touchend",   onTouchEnd);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const activeServiceIdx = phaseToServiceIndex(phase);
+  const activeService    = SERVICES[activeServiceIdx];
 
   return (
     <section ref={containerRef} id="services" style={{ height: "500vh" }} aria-label="ORYX build stack">
       <div className="sticky top-0 h-screen overflow-hidden bg-[#020202]">
 
-        {/* Section background grid */}
+        {/* Background grid */}
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{
-          backgroundImage: [
-            "linear-gradient(to right, rgba(255,255,255,0.028) 1px, transparent 1px)",
-            "linear-gradient(to bottom, rgba(255,255,255,0.024) 1px, transparent 1px)",
-          ].join(", "),
+          backgroundImage: ["linear-gradient(to right,rgba(255,255,255,0.028) 1px,transparent 1px)", "linear-gradient(to bottom,rgba(255,255,255,0.024) 1px,transparent 1px)"].join(","),
           backgroundSize: "80px 80px",
         }} />
 
@@ -305,109 +397,164 @@ export function BuildStack() {
           <rect width="100%" height="100%" filter="url(#bs-grain)" />
         </svg>
 
-        {/* ── PHASE 0: Hero text — solid black, nothing bleeds through ──── */}
+        {/* ── PHASE 0: Hero — solid #020202, nothing bleeds through ──────── */}
         <motion.div
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-8 text-center"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
           initial={false}
           animate={{ opacity: phase === 0 ? 1 : 0, pointerEvents: phase === 0 ? "auto" : "none" }}
           transition={UI_TRANSITION}
           style={{ background: "#020202" }}
         >
-          {/* Same grid texture on the overlay so it feels continuous */}
+          {/* Grid texture on overlay so it looks continuous */}
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{
-            backgroundImage: [
-              "linear-gradient(to right, rgba(255,255,255,0.028) 1px, transparent 1px)",
-              "linear-gradient(to bottom, rgba(255,255,255,0.024) 1px, transparent 1px)",
-            ].join(", "),
+            backgroundImage: ["linear-gradient(to right,rgba(255,255,255,0.028) 1px,transparent 1px)", "linear-gradient(to bottom,rgba(255,255,255,0.024) 1px,transparent 1px)"].join(","),
             backgroundSize: "80px 80px",
           }} />
 
           {/* Corner brackets */}
-          {([
-            "top-8 left-[7.6vw] border-t border-l",
-            "top-8 right-[7.6vw] border-t border-r",
-            "bottom-8 left-[7.6vw] border-b border-l",
-            "bottom-8 right-[7.6vw] border-b border-r",
-          ] as const).map((cls, i) => (
+          {(["top-6 left-5 sm:top-8 sm:left-[7.6vw] border-t border-l", "top-6 right-5 sm:top-8 sm:right-[7.6vw] border-t border-r", "bottom-6 left-5 sm:bottom-8 sm:left-[7.6vw] border-b border-l", "bottom-6 right-5 sm:bottom-8 sm:right-[7.6vw] border-b border-r"] as const).map((cls, i) => (
             <div key={i} aria-hidden className={`absolute ${cls} pointer-events-none`}
-              style={{ width: "18px", height: "18px", borderColor: "rgba(255,255,255,0.14)" }} />
+              style={{ width: "16px", height: "16px", borderColor: "rgba(255,255,255,0.14)" }} />
           ))}
 
-          {/* Horizontal scan line at mid-height */}
+          {/* Horizontal scan line */}
           <div aria-hidden className="pointer-events-none absolute left-0 right-0"
             style={{ top: "50%", height: "1px", background: "linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.07) 20%,rgba(255,255,255,0.13) 50%,rgba(255,255,255,0.07) 80%,transparent 100%)" }} />
 
-          {/* Text */}
-          <p className="relative mb-7 z-10" style={{ fontSize: "11px", letterSpacing: "0.34em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
+          <p className="relative z-10 mb-6" style={{ fontSize: "11px", letterSpacing: "0.34em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
             &gt;&nbsp; BUILD STACK
           </p>
-          <h2 className="relative z-10 font-display font-medium tracking-[-0.025em] text-oryx-white" style={{ fontSize: "clamp(44px, 5.8vw, 92px)", lineHeight: 1.04 }}>
+          <h2 className="relative z-10 font-display font-medium tracking-[-0.025em] text-oryx-white"
+            style={{ fontSize: "clamp(36px,5.8vw,92px)", lineHeight: 1.05 }}>
             One studio.<br />Four systems.
           </h2>
-          <p className="relative z-10 mt-7 leading-[1.85]" style={{ fontSize: "14px", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", letterSpacing: "0.01em", maxWidth: "520px" }}>
-            We design, build, automate, and visualize<br />digital operations that scale.
+          <p className="relative z-10 mt-6 leading-[1.85]"
+            style={{ fontSize: "clamp(13px,1.1vw,14px)", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", letterSpacing: "0.01em", maxWidth: "480px" }}>
+            We design, build, automate, and visualize<br className="hidden sm:block" /> digital operations that scale.
           </p>
-          <div className="relative z-10 mt-14 flex items-center gap-3">
-            <div style={{ width: "28px", height: "1px", background: "rgba(255,255,255,0.14)" }} />
-            <p style={{ fontSize: "9px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>SCROLL TO EXPLORE</p>
-            <div style={{ width: "28px", height: "1px", background: "rgba(255,255,255,0.14)" }} />
+          <div className="relative z-10 mt-10 flex items-center gap-3">
+            <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.14)" }} />
+            <p style={{ fontSize: "9px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
+              <span className="hidden sm:inline">SCROLL</span>
+              <span className="sm:hidden">SWIPE</span>
+              {" "}TO EXPLORE
+            </p>
+            <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.14)" }} />
           </div>
         </motion.div>
 
-        {/* ── PHASES 1-3: Left panel + Right scenes ───────────────────── */}
+        {/* ── PHASES 1–3 ────────────────────────────────────────────────── */}
         <motion.div
-          className="relative z-10 flex h-full flex-col lg:flex-row"
+          className="relative z-10 h-full"
           initial={false}
           animate={{ opacity: phase >= 1 ? 1 : 0, y: phase >= 1 ? 0 : 20 }}
           transition={UI_TRANSITION}
           style={{ pointerEvents: phase >= 1 ? "auto" : "none" }}
         >
-          {/* Left panel */}
-          <div className="flex w-full flex-col justify-center overflow-hidden px-[7.6vw] py-10 lg:w-[38%] lg:py-16 lg:overflow-visible">
-            <p className="mb-8" style={{ fontSize: "11px", letterSpacing: "0.28em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-              &gt; BUILD STACK
-            </p>
-            <h2 className="font-display font-medium leading-[1.06] tracking-[-0.02em] text-oryx-white" style={{ fontSize: "clamp(28px, 3.2vw, 52px)" }}>
-              One studio.<br />Four systems.
-            </h2>
-            <p className="mt-5 leading-[1.75]" style={{ fontSize: "13px", color: "#9b9ba0", letterSpacing: "0.01em", maxWidth: "340px", fontFamily: "var(--font-jetbrains),monospace" }}>
-              We design, build, automate, and visualize digital operations that scale.
-            </p>
-            <div className="my-8" style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
-            <div className="flex flex-col gap-6">
-              {SERVICES.map((s, i) => (
-                <ServiceListItem key={s.id} service={s} isActive={activeServiceIdx === i} isPast={activeServiceIdx > i} />
-              ))}
+
+          {/* ── MOBILE layout ─────────────────────────────────────────────── */}
+          <div className="lg:hidden flex flex-col h-full">
+
+            {/* Top: active service info */}
+            <div className="flex flex-col justify-between px-5 pt-8 pb-4" style={{ height: "42vh" }}>
+
+              {/* Header row */}
+              <div className="flex items-center justify-between">
+                <p style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
+                  &gt; BUILD STACK
+                </p>
+                {/* Phase dots */}
+                <div className="flex gap-1.5">
+                  {SERVICES.map((_, i) => (
+                    <div key={i} style={{
+                      width: activeServiceIdx === i ? "18px" : "6px",
+                      height: "6px",
+                      borderRadius: "3px",
+                      background: activeServiceIdx === i ? "rgba(255,255,255,0.85)" : activeServiceIdx > i ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.09)",
+                      transition: "all 0.5s ease-in-out",
+                    }} />
+                  ))}
+                </div>
+              </div>
+
+              {/* Animated active service */}
+              <AnimatePresence mode="wait">
+                <motion.div key={activeServiceIdx}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex-1 flex flex-col justify-center"
+                >
+                  <p style={{ fontSize: "11px", letterSpacing: "0.22em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace", marginBottom: "8px" }}>
+                    {activeService.id}
+                  </p>
+                  <h2 className="font-display font-semibold leading-tight text-oryx-white"
+                    style={{ fontSize: "clamp(24px,6vw,34px)", letterSpacing: "-0.015em" }}>
+                    {activeService.title}
+                  </h2>
+                  {activeService.subtitle && (
+                    <p style={{ fontSize: "14px", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", marginTop: "4px" }}>
+                      + {activeService.subtitle}
+                    </p>
+                  )}
+                  <p style={{ fontSize: "12px", color: "#9b9ba0", fontFamily: "var(--font-jetbrains),monospace", marginTop: "10px", lineHeight: 1.65, letterSpacing: "0.015em" }}>
+                    {activeService.desc}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Progress strip */}
+              <ProgressStrip activeIdx={activeServiceIdx} />
             </div>
-            {/* Progress strip */}
-            <div className="mt-10 flex items-center gap-2">
-              {SERVICES.map((_, i) => (
-                <div key={i} className="rounded-[1px] transition-all duration-500 ease-in-out" style={{
-                  height: "2px",
-                  width: activeServiceIdx === i ? "32px" : "12px",
-                  background: activeServiceIdx === i ? "rgba(255,255,255,0.88)" : activeServiceIdx > i ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.09)",
-                }} />
-              ))}
-              <span className="ml-2" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                0{activeServiceIdx + 1} / 03
-              </span>
+
+            {/* Bottom: scene image — fills remaining height */}
+            <div className="relative flex-1 overflow-hidden" style={{ perspective: "800px" }}>
+              {SCENE_DATA.map(s => <MobileScene key={s.index} data={s} phase={phase} />)}
             </div>
           </div>
 
-          {/* Right panel */}
-          <div className="relative flex-1 overflow-hidden" style={{ perspective: "1200px" }}>
-            <VerticalSpine phase={phase} />
-            {SCENE_DATA.map((s) => <Scene key={s.index} data={s} phase={phase} />)}
-            <div aria-hidden className="pointer-events-none absolute inset-0"
-              style={{ background: "radial-gradient(ellipse at 60% 50%, rgba(255,255,255,0.009) 0%, transparent 55%)" }} />
+          {/* ── DESKTOP layout ────────────────────────────────────────────── */}
+          <div className="hidden lg:flex h-full">
+
+            {/* Left panel */}
+            <div className="flex w-[38%] flex-col justify-center overflow-hidden px-[7.6vw] py-16">
+              <p className="mb-8" style={{ fontSize: "11px", letterSpacing: "0.28em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
+                &gt; BUILD STACK
+              </p>
+              <h2 className="font-display font-medium leading-[1.06] tracking-[-0.02em] text-oryx-white"
+                style={{ fontSize: "clamp(28px,3.2vw,52px)" }}>
+                One studio.<br />Four systems.
+              </h2>
+              <p className="mt-5 leading-[1.75]" style={{ fontSize: "13px", color: "#9b9ba0", letterSpacing: "0.01em", maxWidth: "340px", fontFamily: "var(--font-jetbrains),monospace" }}>
+                We design, build, automate, and visualize digital operations that scale.
+              </p>
+              <div className="my-8" style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
+              <div className="flex flex-col gap-6">
+                {SERVICES.map((s, i) => (
+                  <ServiceListItem key={s.id} service={s} isActive={activeServiceIdx === i} isPast={activeServiceIdx > i} />
+                ))}
+              </div>
+              <div className="mt-10">
+                <ProgressStrip activeIdx={activeServiceIdx} />
+              </div>
+            </div>
+
+            {/* Right panel */}
+            <div className="relative flex-1 overflow-hidden" style={{ perspective: "1200px" }}>
+              <VerticalSpine phase={phase} />
+              {SCENE_DATA.map(s => <DesktopScene key={s.index} data={s} phase={phase} />)}
+              <div aria-hidden className="pointer-events-none absolute inset-0"
+                style={{ background: "radial-gradient(ellipse at 60% 50%,rgba(255,255,255,0.009) 0%,transparent 55%)" }} />
+            </div>
           </div>
         </motion.div>
 
         {/* Bottom fade */}
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28"
-          style={{ background: "linear-gradient(0deg, #020202 0%, transparent 100%)" }} />
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0"
-          style={{ width: "7.6vw", background: "linear-gradient(90deg, rgba(2,2,2,0.48) 0%, transparent 100%)" }} />
+          style={{ background: "linear-gradient(0deg,#020202 0%,transparent 100%)" }} />
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 hidden lg:block"
+          style={{ width: "7.6vw", background: "linear-gradient(90deg,rgba(2,2,2,0.48) 0%,transparent 100%)" }} />
       </div>
     </section>
   );
