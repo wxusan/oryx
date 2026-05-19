@@ -48,9 +48,9 @@ export function Header({ visible = true }: { visible?: boolean }) {
       {/* CTA */}
       <a
         href="#contact"
-        className="group hidden items-center gap-2 border border-oryx-line px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oryx-white transition-colors duration-300 hover:border-oryx-white md:inline-flex"
+        className="group hidden items-center gap-2 border border-oryx-white bg-oryx-white px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-oryx-black transition-all duration-300 hover:bg-transparent hover:text-oryx-white md:inline-flex"
       >
-        START
+        BOOK A CALL
         <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">
           →
         </span>

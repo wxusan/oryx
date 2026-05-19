@@ -118,7 +118,7 @@ export function Hero({ active = true }: HeroProps) {
               href="#contact"
               className="group inline-flex items-center gap-3 border border-oryx-white bg-oryx-white px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-oryx-black transition-all duration-300 hover:bg-transparent hover:text-oryx-white"
             >
-              START A PROJECT
+              BOOK A 20-MIN CALL
               <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">
                 →
               </span>
