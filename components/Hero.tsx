@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { HeroBackground } from "@/components/HeroBackground";
 import { HeroParticleOverlay } from "@/components/HeroParticleOverlay";
-import { TypingHeadline } from "@/components/TypingHeadline";
 import { Header } from "@/components/Header";
 
 const HEADLINE = [
@@ -46,10 +45,10 @@ export function Hero({ active = true }: HeroProps) {
     setBgOffset({ x: 0, y: 0 });
   }, []);
 
-  // Mark headline done after a max budget so the rest of the page can reveal
+  // Mark done after all headline lines have animated in (~900ms)
   useEffect(() => {
     if (!active) return;
-    const t = window.setTimeout(() => setTypedDone(true), 3200);
+    const t = window.setTimeout(() => setTypedDone(true), 900);
     return () => window.clearTimeout(t);
   }, [active]);
 
@@ -81,15 +80,28 @@ export function Hero({ active = true }: HeroProps) {
             &gt; ORYX / HOME
           </motion.p>
 
-          {/* Typed headline */}
-          <TypingHeadline
-            lines={HEADLINE}
-            start={active}
-            speed={28}
-            lineGap={140}
-            onComplete={() => setTypedDone(true)}
-            className="max-w-[680px] font-display text-[clamp(36px,3.8vw,72px)] font-medium leading-[1.04] tracking-[-0.02em]"
-          />
+          {/* Headline — staggered fade-up per line */}
+          <h1 className="max-w-[680px] font-display text-[clamp(36px,3.8vw,72px)] font-medium leading-[1.04] tracking-[-0.02em]">
+            {HEADLINE.map((line, i) => (
+              <motion.span
+                key={line}
+                className="block"
+                initial={{ opacity: 0, y: 22, filter: "blur(4px)" }}
+                animate={{
+                  opacity: active ? 1 : 0,
+                  y:       active ? 0 : 22,
+                  filter:  active ? "blur(0px)" : "blur(4px)",
+                }}
+                transition={{
+                  duration: 0.65,
+                  delay:    active ? 0.1 + i * 0.12 : 0,
+                  ease:     [0.22, 1, 0.36, 1],
+                }}
+              >
+                {line}
+              </motion.span>
+            ))}
+          </h1>
 
           {/* Description */}
           <motion.p
@@ -125,6 +137,33 @@ export function Hero({ active = true }: HeroProps) {
             </a>
             <a
               href="#work"
+              onClick={(e) => {
+                e.preventDefault();
+                const section = document.getElementById("work");
+                if (!section) return;
+
+                // Fade to black → instant jump → fade back in
+                // Hides the teleport while keeping a cinematic feel
+                const overlay = document.createElement("div");
+                overlay.style.cssText =
+                  "position:fixed;inset:0;z-index:9999;background:#020202;opacity:0;pointer-events:none;transition:opacity 180ms ease";
+                document.body.appendChild(overlay);
+
+                requestAnimationFrame(() => {
+                  overlay.style.opacity = "1";
+                });
+
+                setTimeout(() => {
+                  const top = section.getBoundingClientRect().top + window.scrollY + 140;
+                  window.scrollTo({ top, behavior: "instant" });
+
+                  setTimeout(() => {
+                    overlay.style.transition = "opacity 320ms ease";
+                    overlay.style.opacity = "0";
+                    setTimeout(() => overlay.remove(), 360);
+                  }, 40);
+                }, 200);
+              }}
               className="group inline-flex items-center gap-3 border border-oryx-line px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-oryx-white transition-colors duration-300 hover:border-oryx-white"
             >
               VIEW OUR WORK

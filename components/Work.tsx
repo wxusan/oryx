@@ -1,0 +1,367 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+
+// ─── Data ──────────────────────────────────────────────────────────────────────
+
+const PROJECTS = [
+  {
+    index: "01",
+    client: "Madami.uz",
+    logo: "/partners/madami.png",
+    logoAlt: "Madami",
+    type: "Websites & Platforms",
+    descriptor: "Full-scale e-commerce and digital retail platform built for growth.",
+    url: "https://madami.uz",
+    status: "live",
+    tags: ["E-commerce", "Web Platform"],
+  },
+  {
+    index: "02",
+    client: "Uyjoy.uz",
+    logo: "/partners/uyjoy.png",
+    logoAlt: "Uyjoy",
+    type: "Websites & Platforms",
+    descriptor: "Real estate marketplace connecting buyers, sellers, and agencies nationwide.",
+    url: "https://uyjoy.uz",
+    status: "live",
+    tags: ["Real Estate", "Marketplace"],
+  },
+  {
+    index: "03",
+    client: "Viva Dental",
+    logo: "/partners/viva.png",
+    logoAlt: "Viva Dental",
+    type: "CRM & ERP Systems",
+    descriptor: "Custom patient management and clinic operations system, built end-to-end.",
+    url: null,
+    status: "building",
+    tags: ["CRM", "Healthcare"],
+  },
+] as const;
+
+// ─── Card ──────────────────────────────────────────────────────────────────────
+
+function ProjectCard({
+  project,
+  delay,
+}: {
+  project: (typeof PROJECTS)[number];
+  delay: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative flex flex-col"
+    >
+      {/* Card */}
+      <div
+        className="relative flex flex-col overflow-hidden transition-all duration-500"
+        style={{
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: "4px",
+          background: "rgba(255,255,255,0.014)",
+        }}
+      >
+        {/* Hover border glow */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            borderRadius: "4px",
+            boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.14)",
+          }}
+        />
+
+        {/* Top stripe — index + status */}
+        <div
+          className="flex items-center justify-between px-6 py-4"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          <span
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              color: "#4f4f55",
+              fontFamily: "var(--font-jetbrains),monospace",
+            }}
+          >
+            {project.index}
+          </span>
+
+          {/* Status pill */}
+          <div className="flex items-center gap-2">
+            <div
+              className={project.status === "live" ? "animate-pulse" : ""}
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background:
+                  project.status === "live" ? "#4a9e5c" : "#b8882a",
+              }}
+            />
+            <span
+              style={{
+                fontSize: "9px",
+                letterSpacing: "0.22em",
+                fontFamily: "var(--font-jetbrains),monospace",
+                color: project.status === "live" ? "#4a9e5c" : "#b8882a",
+              }}
+            >
+              {project.status === "live" ? "LIVE" : "IN PROGRESS"}
+            </span>
+          </div>
+        </div>
+
+        {/* Logo area */}
+        <div
+          className="flex items-center justify-center px-6"
+          style={{ height: "300px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          <img
+            src={project.logo}
+            alt={project.logoAlt}
+            className="w-auto object-contain transition-all duration-500 group-hover:opacity-100"
+            style={{ maxHeight: "280px", maxWidth: "100%", filter: "brightness(0) invert(1)", opacity: 0.88 }}
+            onError={(e) => {
+              // Fallback: show client name if logo missing
+              const target = e.currentTarget;
+              target.style.display = "none";
+              const fallback = target.nextElementSibling as HTMLElement;
+              if (fallback) fallback.style.display = "block";
+            }}
+          />
+          {/* Text fallback if logo not found */}
+          <span
+            className="font-display font-semibold text-oryx-white"
+            style={{ fontSize: "clamp(18px,2vw,26px)", display: "none", letterSpacing: "-0.01em" }}
+          >
+            {project.logoAlt}
+          </span>
+        </div>
+
+        {/* Info */}
+        <div className="flex flex-col gap-3 px-6 py-5">
+          <p
+            style={{
+              fontSize: "9px",
+              letterSpacing: "0.24em",
+              color: "#4f4f55",
+              fontFamily: "var(--font-jetbrains),monospace",
+            }}
+          >
+            &gt; {project.type.toUpperCase()}
+          </p>
+          <h3
+            className="font-display font-semibold text-oryx-white leading-snug"
+            style={{ fontSize: "clamp(17px,1.4vw,20px)", letterSpacing: "-0.01em" }}
+          >
+            {project.client}
+          </h3>
+          <p
+            style={{
+              fontSize: "12px",
+              color: "#8b8b8f",
+              fontFamily: "var(--font-jetbrains),monospace",
+              lineHeight: 1.65,
+              letterSpacing: "0.01em",
+            }}
+          >
+            {project.descriptor}
+          </p>
+        </div>
+
+        {/* Tags + link */}
+        <div
+          className="flex items-center justify-between px-6 py-4"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          <div className="flex gap-2 flex-wrap">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontSize: "9px",
+                  letterSpacing: "0.16em",
+                  fontFamily: "var(--font-jetbrains),monospace",
+                  color: "#4f4f55",
+                  padding: "3px 8px",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: "2px",
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {project.url ? (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 transition-colors duration-300 hover:text-oryx-white"
+              style={{
+                fontSize: "10px",
+                letterSpacing: "0.18em",
+                fontFamily: "var(--font-jetbrains),monospace",
+                color: "#4f4f55",
+              }}
+            >
+              VISIT
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          ) : (
+            <span
+              style={{
+                fontSize: "10px",
+                letterSpacing: "0.18em",
+                fontFamily: "var(--font-jetbrains),monospace",
+                color: "#3a3a40",
+              }}
+            >
+              NDA
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Large background number */}
+      <div
+        className="pointer-events-none absolute -bottom-4 -right-2 select-none font-display font-bold leading-none text-oryx-white opacity-[0.025] transition-opacity duration-500 group-hover:opacity-[0.04]"
+        style={{ fontSize: "clamp(80px,10vw,140px)", letterSpacing: "-0.04em" }}
+        aria-hidden
+      >
+        {project.index}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Work ──────────────────────────────────────────────────────────────────────
+
+export function Work() {
+  const headRef = useRef<HTMLDivElement>(null);
+  const headInView = useInView(headRef, { once: true, margin: "-60px" });
+
+  return (
+    <section
+      id="work"
+      className="relative bg-[#020202] px-[7.6vw] py-28 lg:py-36"
+      aria-label="ORYX selected work"
+    >
+      {/* Subtle grid */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: [
+            "linear-gradient(to right, rgba(255,255,255,0.022) 1px, transparent 1px)",
+            "linear-gradient(to bottom, rgba(255,255,255,0.018) 1px, transparent 1px)",
+          ].join(", "),
+          backgroundSize: "80px 80px",
+        }}
+      />
+
+      {/* Grain */}
+      <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full mix-blend-soft-light" style={{ opacity: 0.022 }}>
+        <filter id="work-grain">
+          <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="2" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#work-grain)" />
+      </svg>
+
+      <div className="relative z-10">
+
+        {/* Header */}
+        <div ref={headRef} className="mb-16 lg:mb-20">
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={headInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-5"
+            style={{ fontSize: "11px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}
+          >
+            &gt; WORK
+          </motion.p>
+
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
+              animate={headInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="font-display font-medium text-oryx-white"
+              style={{ fontSize: "clamp(32px,4vw,64px)", letterSpacing: "-0.025em", lineHeight: 1.04 }}
+            >
+              Selected work.
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={headInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.65, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                fontSize: "12px",
+                color: "#8b8b8f",
+                fontFamily: "var(--font-jetbrains),monospace",
+                maxWidth: "320px",
+                lineHeight: 1.75,
+                letterSpacing: "0.01em",
+              }}
+            >
+              Real products. Real clients.<br />Built and shipped by ORYX.
+            </motion.p>
+          </div>
+
+          {/* Divider */}
+          <motion.div
+            initial={{ scaleX: 0, originX: 0 }}
+            animate={headInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.9, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-10"
+            style={{ height: "1px", background: "rgba(255,255,255,0.07)" }}
+          />
+        </div>
+
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {PROJECTS.map((project, i) => (
+            <ProjectCard key={project.index} project={project} delay={i * 0.1} />
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-16 flex items-center justify-between"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "32px" }}
+        >
+          <p style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
+            MORE COMING SOON
+          </p>
+          <a
+            href="#contact"
+            className="group flex items-center gap-2 transition-colors duration-300 hover:text-oryx-white"
+            style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace" }}
+          >
+            WORK WITH US
+            <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
