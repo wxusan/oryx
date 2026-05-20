@@ -2,20 +2,19 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
-// ─── Data ──────────────────────────────────────────────────────────────────────
+// ─── Static project data (non-translatable fields) ────────────────────────────
 
-const PROJECTS = [
+const PROJECT_META = [
   {
     index: "01",
     client: "Madami.uz",
     logo: "/partners/madami.png",
     logoAlt: "Madami",
     type: "Websites & Platforms",
-    descriptor: "Full-scale e-commerce and digital retail platform built for growth.",
     url: "https://madami.uz",
     status: "live",
-    tags: ["E-commerce", "Web Platform"],
   },
   {
     index: "02",
@@ -23,10 +22,8 @@ const PROJECTS = [
     logo: "/partners/uyjoy.png",
     logoAlt: "Uyjoy",
     type: "Websites & Platforms",
-    descriptor: "Real estate marketplace connecting buyers, sellers, and agencies nationwide.",
     url: "https://uyjoy.uz",
     status: "live",
-    tags: ["Real Estate", "Marketplace"],
   },
   {
     index: "03",
@@ -34,20 +31,28 @@ const PROJECTS = [
     logo: "/partners/viva.png",
     logoAlt: "Viva Dental",
     type: "CRM & ERP Systems",
-    descriptor: "Custom patient management and clinic operations system, built end-to-end.",
     url: null,
     status: "building",
-    tags: ["CRM", "Healthcare"],
   },
-] as const;
+];
 
 // ─── Card ──────────────────────────────────────────────────────────────────────
 
 function ProjectCard({
   project,
+  descriptor,
+  tags,
+  liveLabel,
+  inProgressLabel,
+  visitLabel,
   delay,
 }: {
-  project: (typeof PROJECTS)[number];
+  project: typeof PROJECT_META[number];
+  descriptor: string;
+  tags: readonly string[];
+  liveLabel: string;
+  inProgressLabel: string;
+  visitLabel: string;
   delay: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -115,7 +120,7 @@ function ProjectCard({
                 color: project.status === "live" ? "#4a9e5c" : "#b8882a",
               }}
             >
-              {project.status === "live" ? "LIVE" : "IN PROGRESS"}
+              {project.status === "live" ? liveLabel : inProgressLabel}
             </span>
           </div>
         </div>
@@ -174,7 +179,7 @@ function ProjectCard({
               letterSpacing: "0.01em",
             }}
           >
-            {project.descriptor}
+            {descriptor}
           </p>
         </div>
 
@@ -184,7 +189,7 @@ function ProjectCard({
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
         >
           <div className="flex gap-2 flex-wrap">
-            {project.tags.map((tag) => (
+            {tags.map((tag) => (
               <span
                 key={tag}
                 style={{
@@ -215,7 +220,7 @@ function ProjectCard({
                 color: "#4f4f55",
               }}
             >
-              VISIT
+              {visitLabel}
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                 <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -250,6 +255,7 @@ function ProjectCard({
 // ─── Work ──────────────────────────────────────────────────────────────────────
 
 export function Work() {
+  const { tr } = useLanguage();
   const headRef = useRef<HTMLDivElement>(null);
   const headInView = useInView(headRef, { once: true, margin: "-60px" });
 
@@ -292,7 +298,7 @@ export function Work() {
             className="mb-5"
             style={{ fontSize: "11px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}
           >
-            &gt; WORK
+            {tr.work.label}
           </motion.p>
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -303,7 +309,7 @@ export function Work() {
               className="font-display font-medium text-oryx-white"
               style={{ fontSize: "clamp(32px,4vw,64px)", letterSpacing: "-0.025em", lineHeight: 1.04 }}
             >
-              Selected work.
+              {tr.work.headline}
             </motion.h2>
 
             <motion.p
@@ -317,9 +323,10 @@ export function Work() {
                 maxWidth: "320px",
                 lineHeight: 1.75,
                 letterSpacing: "0.01em",
+                whiteSpace: "pre-line",
               }}
             >
-              Real products. Real clients.<br />Built and shipped by ORYX.
+              {tr.work.tagline}
             </motion.p>
           </div>
 
@@ -335,8 +342,17 @@ export function Work() {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {PROJECTS.map((project, i) => (
-            <ProjectCard key={project.index} project={project} delay={i * 0.1} />
+          {PROJECT_META.map((project, i) => (
+            <ProjectCard
+              key={project.index}
+              project={project}
+              descriptor={tr.work.projects[i].descriptor}
+              tags={tr.work.projects[i].tags}
+              liveLabel={tr.work.live}
+              inProgressLabel={tr.work.inProgress}
+              visitLabel={tr.work.visit}
+              delay={i * 0.1}
+            />
           ))}
         </div>
 
@@ -350,14 +366,14 @@ export function Work() {
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "32px" }}
         >
           <p style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-            MORE COMING SOON
+            {tr.work.moreSoon}
           </p>
           <a
             href="#contact"
             className="group flex items-center gap-2 transition-colors duration-300 hover:text-oryx-white"
             style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace" }}
           >
-            WORK WITH US
+            {tr.work.workWithUs}
             <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">→</span>
           </a>
         </motion.div>

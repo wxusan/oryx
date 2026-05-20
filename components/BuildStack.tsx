@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -16,65 +17,36 @@ type OverlayItem  = { label: string; value?: string; delta?: string; x: string; 
 type SceneData    = { index: number; photo: string; num: string; title: string; subtitle: string; overlays: OverlayItem[] };
 type ServiceEntry = { id: string; title: string; subtitle?: string; desc: string };
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Static overlay data (non-translatable metric values) ─────────────────────
 
-const SERVICES: ServiceEntry[] = [
-  {
-    id: "01 — 02",
-    title: "Websites & Platforms",
-    subtitle: "CRM & ERP Systems",
-    desc: "High-performance websites, landing pages, e-commerce, and booking platforms — plus CRM pipelines, client records, inventory, operations, approvals, and internal workflows.",
-  },
-  {
-    id: "03",
-    title: "Mobile Apps",
-    desc: "iOS, Android, and cross-platform apps for customers, teams, marketplaces, and product ideas.",
-  },
-  {
-    id: "04",
-    title: "AI Automations & Custom Systems",
-    desc: "AI agents, bots, integrations, custom workflows, reporting systems, and unusual ideas that do not fit a template.",
-  },
+const SCENE_OVERLAYS: OverlayItem[][] = [
+  [
+    { x: "5%",  y: "14%", label: "LANDING PAGE" },
+    { x: "62%", y: "12%", label: "CRM PIPELINE" },
+    { x: "5%",  y: "57%", label: "VISITORS",   value: "24.8K", delta: "+18%" },
+    { x: "5%",  y: "74%", label: "CONVERSION", value: "3.92%", delta: "+12%" },
+    { x: "62%", y: "57%", label: "LEADS",      value: "1.8K",  delta: "+31%" },
+    { x: "62%", y: "74%", label: "CYCLE TIME", value: "2.1d",  delta: "−37%" },
+  ],
+  [
+    { x: "5%",  y: "14%", label: "CUSTOMER APP" },
+    { x: "60%", y: "12%", label: "TEAM APP" },
+    { x: "5%",  y: "57%", label: "INSTALLS",  value: "18.2K", delta: "+22%"  },
+    { x: "5%",  y: "74%", label: "RETENTION", value: "47%",   delta: "+9.8%" },
+    { x: "60%", y: "57%", label: "ORDERS",    value: "6.1K",  delta: "+19%"  },
+    { x: "60%", y: "74%", label: "RATING",    value: "4.8★",  delta: "+0.4"  },
+  ],
+  [
+    { x: "5%",  y: "14%", label: "AI AGENT" },
+    { x: "60%", y: "12%", label: "DECISION BRANCH" },
+    { x: "5%",  y: "57%", label: "TRIGGERS",     value: "842/hr", delta: "+12%" },
+    { x: "5%",  y: "74%", label: "PROCESSED",    value: "99.4%",  delta: "+2%"  },
+    { x: "60%", y: "57%", label: "INTEGRATIONS", value: "18",     delta: "+6"   },
+    { x: "60%", y: "74%", label: "LATENCY",      value: "1.2s",   delta: "−48%" },
+  ],
 ];
 
-const SCENE_DATA: SceneData[] = [
-  {
-    index: 0, photo: "/scene-1.png", num: "01 + 02",
-    title: "Websites & Platforms", subtitle: "& CRM / ERP Systems",
-    overlays: [
-      { x: "5%",  y: "14%", label: "LANDING PAGE" },
-      { x: "62%", y: "12%", label: "CRM PIPELINE" },
-      { x: "5%",  y: "57%", label: "VISITORS",   value: "24.8K", delta: "+18%" },
-      { x: "5%",  y: "74%", label: "CONVERSION", value: "3.92%", delta: "+12%" },
-      { x: "62%", y: "57%", label: "LEADS",      value: "1.8K",  delta: "+31%" },
-      { x: "62%", y: "74%", label: "CYCLE TIME", value: "2.1d",  delta: "−37%" },
-    ],
-  },
-  {
-    index: 1, photo: "/scene-2.png", num: "03",
-    title: "Mobile Apps", subtitle: "iOS · Android · Cross-platform",
-    overlays: [
-      { x: "5%",  y: "14%", label: "CUSTOMER APP" },
-      { x: "60%", y: "12%", label: "TEAM APP" },
-      { x: "5%",  y: "57%", label: "INSTALLS",  value: "18.2K", delta: "+22%"  },
-      { x: "5%",  y: "74%", label: "RETENTION", value: "47%",   delta: "+9.8%" },
-      { x: "60%", y: "57%", label: "ORDERS",    value: "6.1K",  delta: "+19%"  },
-      { x: "60%", y: "74%", label: "RATING",    value: "4.8★",  delta: "+0.4"  },
-    ],
-  },
-  {
-    index: 2, photo: "/scene-3.png", num: "04",
-    title: "AI Automations", subtitle: "& Custom Systems",
-    overlays: [
-      { x: "5%",  y: "14%", label: "AI AGENT" },
-      { x: "60%", y: "12%", label: "DECISION BRANCH" },
-      { x: "5%",  y: "57%", label: "TRIGGERS",     value: "842/hr", delta: "+12%" },
-      { x: "5%",  y: "74%", label: "PROCESSED",    value: "99.4%",  delta: "+2%"  },
-      { x: "60%", y: "57%", label: "INTEGRATIONS", value: "18",     delta: "+6"   },
-      { x: "60%", y: "74%", label: "LATENCY",      value: "1.2s",   delta: "−48%" },
-    ],
-  },
-];
+const SCENE_PHOTOS = ["/scene-1.png", "/scene-2.png", "/scene-3.png"];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -271,10 +243,10 @@ function ServiceListItem({ service, isActive, isPast }: { service: ServiceEntry;
 
 // ─── Progress strip (shared) ──────────────────────────────────────────────────
 
-function ProgressStrip({ activeIdx }: { activeIdx: number }) {
+function ProgressStrip({ activeIdx, services, counter }: { activeIdx: number; services: ServiceEntry[]; counter: string }) {
   return (
     <div className="flex items-center gap-2">
-      {SERVICES.map((_, i) => (
+      {services.map((_, i) => (
         <div key={i} className="rounded-[1px] transition-all duration-500 ease-in-out" style={{
           height: "2px",
           width: activeIdx === i ? "32px" : "10px",
@@ -282,7 +254,7 @@ function ProgressStrip({ activeIdx }: { activeIdx: number }) {
         }} />
       ))}
       <span className="ml-1" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-        0{activeIdx + 1} / 03
+        {counter}
       </span>
     </div>
   );
@@ -291,6 +263,25 @@ function ProgressStrip({ activeIdx }: { activeIdx: number }) {
 // ─── BuildStack ───────────────────────────────────────────────────────────────
 
 export function BuildStack() {
+  const { tr } = useLanguage();
+
+  // ── Derive data from translations ──────────────────────────────────────────
+  const SERVICES: ServiceEntry[] = tr.buildStack.services.map(s => ({
+    id:       s.id,
+    title:    s.title,
+    subtitle: "subtitle" in s ? (s as { subtitle: string }).subtitle : undefined,
+    desc:     s.desc,
+  }));
+
+  const SCENE_DATA: SceneData[] = tr.buildStack.scenes.map((scene, i) => ({
+    index:    i,
+    photo:    SCENE_PHOTOS[i],
+    num:      scene.num,
+    title:    scene.title,
+    subtitle: scene.subtitle,
+    overlays: SCENE_OVERLAYS[i],
+  }));
+
   const containerRef    = useRef<HTMLDivElement>(null);
   const phaseRef        = useRef(0);
   const isAnimatingRef  = useRef(false);
@@ -377,6 +368,7 @@ export function BuildStack() {
 
   const activeServiceIdx = phaseToServiceIndex(phase);
   const activeService    = SERVICES[activeServiceIdx];
+  const counterStr       = tr.buildStack.counter(activeServiceIdx + 1);
 
   return (
     <section ref={containerRef} id="services" style={{ height: "500vh" }} aria-label="ORYX build stack">
@@ -422,22 +414,21 @@ export function BuildStack() {
             style={{ top: "50%", height: "1px", background: "linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.07) 20%,rgba(255,255,255,0.13) 50%,rgba(255,255,255,0.07) 80%,transparent 100%)" }} />
 
           <p className="relative z-10 mb-6" style={{ fontSize: "11px", letterSpacing: "0.34em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-            &gt;&nbsp; BUILD STACK
+            {tr.buildStack.label}
           </p>
           <h2 className="relative z-10 font-display font-medium tracking-[-0.025em] text-oryx-white"
             style={{ fontSize: "clamp(36px,5.8vw,92px)", lineHeight: 1.05 }}>
-            One studio.<br />Four systems.
+            {tr.buildStack.headline[0]}<br />{tr.buildStack.headline[1]}
           </h2>
           <p className="relative z-10 mt-6 leading-[1.85]"
             style={{ fontSize: "clamp(13px,1.1vw,14px)", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", letterSpacing: "0.01em", maxWidth: "480px" }}>
-            We design, build, automate, and visualize<br className="hidden sm:block" /> digital operations that scale.
+            {tr.buildStack.supporting}
           </p>
           <div className="relative z-10 mt-10 flex items-center gap-3">
             <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.14)" }} />
             <p style={{ fontSize: "9px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-              <span className="hidden sm:inline">SCROLL</span>
-              <span className="sm:hidden">SWIPE</span>
-              {" "}TO EXPLORE
+              <span className="hidden sm:inline">{tr.buildStack.scroll}</span>
+              <span className="sm:hidden">{tr.buildStack.swipe}</span>
             </p>
             <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.14)" }} />
           </div>
@@ -461,7 +452,7 @@ export function BuildStack() {
               {/* Header row */}
               <div className="flex items-center justify-between">
                 <p style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                  &gt; BUILD STACK
+                  {tr.buildStack.label}
                 </p>
                 {/* Phase dots */}
                 <div className="flex gap-1.5">
@@ -505,7 +496,7 @@ export function BuildStack() {
               </AnimatePresence>
 
               {/* Progress strip */}
-              <ProgressStrip activeIdx={activeServiceIdx} />
+              <ProgressStrip activeIdx={activeServiceIdx} services={SERVICES} counter={counterStr} />
             </div>
 
             {/* Bottom: scene image — fills remaining height */}
@@ -520,14 +511,14 @@ export function BuildStack() {
             {/* Left panel */}
             <div className="flex w-[38%] flex-col justify-center overflow-hidden px-[7.6vw] py-16">
               <p className="mb-8" style={{ fontSize: "11px", letterSpacing: "0.28em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                &gt; BUILD STACK
+                {tr.buildStack.label}
               </p>
               <h2 className="font-display font-medium leading-[1.06] tracking-[-0.02em] text-oryx-white"
                 style={{ fontSize: "clamp(28px,3.2vw,52px)" }}>
-                One studio.<br />Four systems.
+                {tr.buildStack.headline[0]}<br />{tr.buildStack.headline[1]}
               </h2>
               <p className="mt-5 leading-[1.75]" style={{ fontSize: "13px", color: "#9b9ba0", letterSpacing: "0.01em", maxWidth: "340px", fontFamily: "var(--font-jetbrains),monospace" }}>
-                We design, build, automate, and visualize digital operations that scale.
+                {tr.buildStack.supporting}
               </p>
               <div className="my-8" style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
               <div className="flex flex-col gap-6">
@@ -536,7 +527,7 @@ export function BuildStack() {
                 ))}
               </div>
               <div className="mt-10">
-                <ProgressStrip activeIdx={activeServiceIdx} />
+                <ProgressStrip activeIdx={activeServiceIdx} services={SERVICES} counter={counterStr} />
               </div>
             </div>
 

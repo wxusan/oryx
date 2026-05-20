@@ -2,16 +2,9 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-
-const SERVICES = [
-  "Website / Landing Page",
-  "Mobile App",
-  "CRM / ERP System",
-  "AI Automation",
-  "Other",
-];
 
 type Status = "idle" | "sending" | "done" | "error";
 
@@ -30,6 +23,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 export function Contact() {
+  const { tr } = useLanguage();
   const ref    = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
@@ -89,7 +83,7 @@ export function Contact() {
             transition={{ duration: 0.55, ease }}
             style={{ fontSize: "11px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace", marginBottom: "24px" }}
           >
-            &gt; CONTACT
+            {tr.contact.label}
           </motion.p>
 
           <motion.h2
@@ -98,7 +92,7 @@ export function Contact() {
             className="font-display font-semibold text-oryx-white"
             style={{ fontSize: "clamp(32px,3.8vw,58px)", letterSpacing: "-0.025em", lineHeight: 1.06, marginBottom: "20px" }}
           >
-            Let's build<br />something.
+            {tr.contact.headline[0]}<br />{tr.contact.headline[1]}
           </motion.h2>
 
           <motion.p
@@ -106,7 +100,7 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.2, ease }}
             style={{ fontSize: "13px", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", lineHeight: 1.75, maxWidth: "300px" }}
           >
-            Fill in the form and I'll get back to you within 24 hours.
+            {tr.contact.description}
           </motion.p>
 
           {/* Divider */}
@@ -124,7 +118,7 @@ export function Contact() {
           >
             <div className="flex items-center gap-4">
               <span style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace", minWidth: "72px" }}>
-                TELEGRAM
+                {tr.contact.labels.telegram}
               </span>
               <a
                 href="https://t.me/wxusan"
@@ -139,7 +133,7 @@ export function Contact() {
             </div>
             <div className="flex items-center gap-4">
               <span style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace", minWidth: "72px" }}>
-                PHONE
+                {tr.contact.labels.phone}
               </span>
               <a
                 href="tel:+998770411222"
@@ -176,10 +170,10 @@ export function Contact() {
                   <span style={{ color: "#4a9e5c", fontSize: "18px" }}>✓</span>
                 </div>
                 <h3 className="font-display font-semibold text-oryx-white" style={{ fontSize: "clamp(22px,2.2vw,32px)", letterSpacing: "-0.02em" }}>
-                  Message sent.
+                  {tr.contact.success.title}
                 </h3>
                 <p style={{ fontSize: "13px", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", lineHeight: 1.7 }}>
-                  I'll get back to you within 24 hours.
+                  {tr.contact.success.message}
                 </p>
               </motion.div>
             ) : (
@@ -193,11 +187,11 @@ export function Contact() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
                     <label style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                      NAME *
+                      {tr.contact.labels.name} *
                     </label>
                     <input
                       type="text"
-                      placeholder="Your name"
+                      placeholder={tr.contact.placeholders.name}
                       value={name}
                       onChange={e => setName(e.target.value)}
                       onFocus={() => setFocused("name")}
@@ -208,11 +202,11 @@ export function Contact() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <label style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                      PHONE NUMBER *
+                      {tr.contact.labels.phone} *
                     </label>
                     <input
                       type="tel"
-                      placeholder="+998 XX XXX XX XX"
+                      placeholder={tr.contact.placeholders.phone}
                       value={phone}
                       onChange={e => setPhone(e.target.value)}
                       onFocus={() => setFocused("phone")}
@@ -227,11 +221,11 @@ export function Contact() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
                     <label style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                      TELEGRAM <span style={{ color: "#2e2e38" }}>(OPTIONAL)</span>
+                      {tr.contact.labels.telegram} <span style={{ color: "#2e2e38" }}>({tr.contact.labels.optional})</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="@username"
+                      placeholder={tr.contact.placeholders.telegram}
                       value={telegram}
                       onChange={e => setTelegram(e.target.value)}
                       onFocus={() => setFocused("telegram")}
@@ -242,7 +236,7 @@ export function Contact() {
 
                   <div className="flex flex-col gap-2">
                     <label style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                      WHAT DO YOU NEED *
+                      {tr.contact.labels.service} *
                     </label>
                     <select
                       value={service}
@@ -252,8 +246,8 @@ export function Contact() {
                       required
                       style={{ ...inputStyle, border: focusBorder("service"), appearance: "none", cursor: "pointer" }}
                     >
-                      <option value="" disabled style={{ background: "#020202" }}>Select a service</option>
-                      {SERVICES.map(s => (
+                      <option value="" disabled style={{ background: "#020202" }}>{tr.contact.placeholders.service}</option>
+                      {tr.contact.services.map(s => (
                         <option key={s} value={s} style={{ background: "#020202" }}>{s}</option>
                       ))}
                     </select>
@@ -263,10 +257,10 @@ export function Contact() {
                 {/* Message */}
                 <div className="flex flex-col gap-2">
                   <label style={{ fontSize: "9px", letterSpacing: "0.24em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace" }}>
-                    MESSAGE <span style={{ color: "#2e2e38" }}>(OPTIONAL)</span>
+                    {tr.contact.labels.message} <span style={{ color: "#2e2e38" }}>({tr.contact.labels.optional})</span>
                   </label>
                   <textarea
-                    placeholder="Tell me about your project..."
+                    placeholder={tr.contact.placeholders.message}
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     onFocus={() => setFocused("message")}
@@ -283,14 +277,14 @@ export function Contact() {
                     disabled={status === "sending"}
                     className="group inline-flex items-center gap-3 border border-oryx-white bg-oryx-white px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-oryx-black transition-all duration-300 hover:bg-transparent hover:text-oryx-white disabled:opacity-50"
                   >
-                    {status === "sending" ? "SENDING..." : "SEND MESSAGE"}
+                    {status === "sending" ? tr.contact.sending : tr.contact.submit}
                     {status !== "sending" && (
                       <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     )}
                   </button>
                   {status === "error" && (
                     <span style={{ fontSize: "11px", color: "#9e4a4a", fontFamily: "var(--font-jetbrains),monospace", letterSpacing: "0.1em" }}>
-                      Something went wrong. Try again.
+                      {tr.contact.error}
                     </span>
                   )}
                 </div>

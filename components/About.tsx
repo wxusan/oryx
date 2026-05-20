@@ -2,16 +2,12 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const STATS = [
-  { value: "4",   label: "Years building" },
-  { value: "15+", label: "Projects shipped" },
-  { value: "3",   label: "Domains" },
-];
-
 export function About() {
+  const { tr } = useLanguage();
   const ref    = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
@@ -39,25 +35,42 @@ export function About() {
             transition={{ duration: 0.55, ease }}
             style={{ fontSize: "11px", letterSpacing: "0.3em", color: "#4f4f55", fontFamily: "var(--font-jetbrains),monospace", marginBottom: "24px" }}
           >
-            &gt; ABOUT
+            {tr.about.label}
           </motion.p>
 
-          {/* Name */}
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease }}
-            className="font-display font-semibold text-oryx-white"
-            style={{ fontSize: "clamp(36px,4.2vw,68px)", letterSpacing: "-0.028em", lineHeight: 1.04, marginBottom: "12px" }}
-          >
-            Xusan<br />Ibragimov
-          </motion.h2>
+          {/* Name + mobile photo side by side */}
+          <div className="flex items-start justify-between gap-4 lg:block">
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.1, ease }}
+              className="font-display font-semibold text-oryx-white"
+              style={{ fontSize: "clamp(36px,4.2vw,68px)", letterSpacing: "-0.028em", lineHeight: 1.04, marginBottom: "12px" }}
+            >
+              Xusan<br />Ibragimov
+            </motion.h2>
+
+            {/* Mobile-only portrait — hidden on desktop (photo panel handles it) */}
+            <motion.div
+              className="lg:hidden shrink-0 overflow-hidden rounded-sm"
+              style={{ width: "110px", height: "140px", border: "1px solid rgba(255,255,255,0.1)" }}
+              initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.14, ease }}
+            >
+              <img
+                src="/xusan.jpg"
+                alt="Xusan Ibragimov"
+                className="h-full w-full object-cover object-bottom"
+                style={{ filter: "brightness(0.78) contrast(1.06) saturate(0.82)", imageOrientation: "none" }}
+              />
+            </motion.div>
+          </div>
 
           <motion.p
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.55, delay: 0.18, ease }}
             style={{ fontSize: "12px", letterSpacing: "0.2em", color: "#8b8b8f", fontFamily: "var(--font-jetbrains),monospace", marginBottom: "36px" }}
           >
-            CEO & SOFTWARE ENGINEER
+            {tr.about.title}
           </motion.p>
 
           <motion.div
@@ -72,7 +85,7 @@ export function About() {
             transition={{ duration: 0.6, delay: 0.28, ease }}
             style={{ fontSize: "15px", color: "#9b9ba0", fontFamily: "var(--font-jetbrains),monospace", lineHeight: 1.75, letterSpacing: "0.01em", maxWidth: "400px", marginBottom: "48px" }}
           >
-            Founder and engineer behind ORYX. I build products end-to-end — no layers, no handoffs.
+            {tr.about.bio}
           </motion.p>
 
           {/* Stats */}
@@ -81,7 +94,7 @@ export function About() {
             transition={{ duration: 0.6, delay: 0.34, ease }}
             className="flex gap-10 flex-wrap mb-12"
           >
-            {STATS.map((s) => (
+            {tr.about.stats.map((s) => (
               <div key={s.value} className="flex flex-col gap-1.5">
                 <span className="font-display font-semibold text-oryx-white" style={{ fontSize: "clamp(36px,3.5vw,52px)", letterSpacing: "-0.02em", lineHeight: 1 }}>
                   {s.value}
@@ -102,15 +115,15 @@ export function About() {
               href="#contact"
               className="group inline-flex items-center gap-3 border border-oryx-white bg-oryx-white px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-oryx-black transition-all duration-300 hover:bg-transparent hover:text-oryx-white"
             >
-              BOOK A 20-MIN CALL
+              {tr.about.cta}
               <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">→</span>
             </a>
           </motion.div>
         </div>
 
-        {/* ── Right — photo, full bleed ────────────────────────────────── */}
+        {/* ── Right — photo, full bleed (desktop only) ────────────────── */}
         <motion.div
-          className="relative w-full overflow-hidden lg:w-[50%]"
+          className="relative hidden w-full overflow-hidden lg:block lg:w-[50%]"
           style={{ minHeight: "480px" }}
           initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1, delay: 0.08, ease }}

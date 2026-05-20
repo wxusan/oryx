@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { OryxBootBackground } from "@/components/OryxBootBackground";
+import { useLanguage } from "@/context/LanguageContext";
 
 type IntroLoaderProps = { onComplete: () => void };
 type FlickerState = "none" | "black" | "white";
 
-// Each line: how long it takes to finish typing (ms) — used for progress calc
-const bootLines = [
-  { command: "INITIALIZING ORYX", status: "[ OK ]", stage: 2, doneStage: 3 },
-  { command: "SYSTEM CHECK",      status: "[ OK ]", stage: 3, doneStage: 4 },
-  { command: "READY",             status: "[ ✓ ]",  stage: 4, doneStage: 5 },
+// Stage assignments for each boot line (fixed, not translated)
+const BOOT_LINE_STAGES = [
+  { stage: 2, doneStage: 3 },
+  { stage: 3, doneStage: 4 },
+  { stage: 4, doneStage: 5 },
 ];
 
 // Progress milestones matched to stage timings
@@ -136,6 +137,7 @@ function ProgressBar({ stage }: { stage: number }) {
 }
 
 export function IntroLoader({ onComplete }: IntroLoaderProps) {
+  const { tr } = useLanguage();
   const [visible, setVisible] = useState(true);
   const [stage,   setStage]   = useState(0);
   const [flicker, setFlicker] = useState<FlickerState>("none");
@@ -204,13 +206,13 @@ export function IntroLoader({ onComplete }: IntroLoaderProps) {
             />
 
             <div className="absolute left-[13.35vw] top-[42.1vh] flex flex-col gap-[32px]">
-              {bootLines.map((line, index) => (
+              {tr.loader.lines.map((line, index) => (
                 <TerminalLine
                   key={line.command}
                   command={line.command}
                   status={line.status}
-                  active={stage >= line.stage}
-                  statusActive={stage >= line.doneStage}
+                  active={stage >= BOOT_LINE_STAGES[index].stage}
+                  statusActive={stage >= BOOT_LINE_STAGES[index].doneStage}
                 />
               ))}
 
