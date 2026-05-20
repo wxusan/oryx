@@ -20,7 +20,9 @@ function detectLang(): Lang {
   const saved = localStorage.getItem("oryx-lang") as Lang | null;
   if (saved === "en" || saved === "ru") return saved;
   const nav = navigator.language || "";
-  return nav.startsWith("ru") || nav.startsWith("uz") ? "ru" : "en";
+  if (nav.startsWith("uz")) return "uz";
+  if (nav.startsWith("ru")) return "ru";
+  return "en";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

@@ -7,7 +7,7 @@ export function LanguageSwitcher() {
 
   return (
     <div className="flex items-center gap-1" style={{ fontFamily: "var(--font-jetbrains),monospace" }}>
-      {(["en", "ru"] as const).map((l, i) => (
+      {(["en", "ru", "uz"] as const).map((l, i) => (
         <span key={l} className="flex items-center gap-1">
           {i > 0 && (
             <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.18)", margin: "0 2px" }}>

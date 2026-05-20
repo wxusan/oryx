@@ -1,4 +1,4 @@
-export type Lang = "en" | "ru";
+export type Lang = "en" | "ru" | "uz";
 
 const t = {
   en: {
@@ -254,6 +254,134 @@ const t = {
         message: "Я отвечу в течение 24 часов.",
       },
       error: "Что-то пошло не так. Попробуйте ещё раз.",
+    },
+  },
+
+  uz: {
+    nav: {
+      services: "XIZMATLAR",
+      work:     "ISHLAR",
+      about:    "BIZ HAQIMIZDA",
+      contact:  "BOG'LANISH",
+      cta:      "QONGIROQ",
+    },
+    hero: {
+      eyebrow:     "> ORYX / BOSH SAHIFA",
+      headline:    ["G'oyalarni raqamli", "mahsulotlarga", "aylantiramiz."],
+      description: "Veb-saytlar, MVP, avtomatizatsiya va AI tizimlari uchun raqamli mahsulot studiyasi.",
+      cta1:        "20 DAQIQALIK QONGIROQ",
+      cta2:        "ISHLARIMIZ",
+      scroll:      "PASTGA AYLANTIRING",
+      swipe:       "PASTGA AYLANTIRING",
+      year:        "2026 — ORYX STUDIO",
+    },
+    loader: {
+      lines: [
+        { command: "ORYX ISHGA TUSHIRILMOQDA", status: "[ OK ]" },
+        { command: "TIZIM TEKSHIRUVI",         status: "[ OK ]" },
+        { command: "TAYYOR",                   status: "[ ✓ ]"  },
+      ],
+    },
+    buildStack: {
+      label:      "> ISHLAB CHIQISH STEKI",
+      headline:   ["Bitta studio.", "To'rt tizim."],
+      supporting: "Biz raqamli operatsiyalarni loyihalash, qurish, avtomatlashtirish va vizualizatsiya qilamiz.",
+      scroll:     "PASTGA AYLANTIRING",
+      swipe:      "PASTGA AYLANTIRING",
+      services: [
+        {
+          id:       "01 — 02",
+          title:    "Veb-saytlar va Platformalar",
+          subtitle: "CRM va ERP Tizimlari",
+          desc:     "Yuqori samarali veb-saytlar, landinglar, e-commerce — hamda CRM, mijozlar bazasi, ombor va ichki jarayonlar.",
+        },
+        {
+          id:   "03",
+          title: "Mobil Ilovalar",
+          desc:  "iOS, Android va cross-platform ilovalar — mijozlar, jamoalar va marketplace uchun.",
+        },
+        {
+          id:   "04",
+          title: "AI Avtomatizatsiyalar va Tizimlar",
+          desc:  "AI agentlar, botlar, integratsiyalar, maxsus jarayonlar, hisobot tizimlari va noodatiy g'oyalar.",
+        },
+      ],
+      scenes: [
+        { num: "01 + 02", title: "Veb-saytlar va Platformalar", subtitle: "va CRM / ERP Tizimlari" },
+        { num: "03",      title: "Mobil Ilovalar",               subtitle: "iOS · Android · Cross-platform" },
+        { num: "04",      title: "AI Avtomatizatsiyalar",        subtitle: "va Maxsus Tizimlar" },
+      ],
+      counter: (n: number) => `0${n} / 03`,
+    },
+    work: {
+      label:      "> ISHLAR",
+      headline:   "Tanlangan ishlar.",
+      tagline:    "Haqiqiy mahsulotlar. Haqiqiy mijozlar.\nORYX tomonidan qurilgan va topshirilgan.",
+      moreSoon:   "YAQINDA KO'PROQ",
+      workWithUs: "BIZ BILAN ISHLASH",
+      live:       "ISHGA TUSHGAN",
+      inProgress: "ISHLAB CHIQILMOQDA",
+      visit:      "OCHISH",
+      projects: [
+        {
+          descriptor: "O'sish uchun qurilgan to'laqonli e-commerce platformasi va raqamli do'kon.",
+          tags: ["E-commerce", "Veb Platforma"],
+        },
+        {
+          descriptor: "Xaridorlar, sotuvchilar va agentliklarni birlashtiruvchi ko'chmas mulk marketplace.",
+          tags: ["Ko'chmas Mulk", "Marketplace"],
+        },
+        {
+          descriptor: "Klinika uchun maxsus bemorlarni boshqarish va operatsion tizim.",
+          tags: ["CRM", "Tibbiyot"],
+        },
+      ],
+    },
+    about: {
+      label: "> BIZ HAQIMIZDA",
+      title: "BOSH DIREKTOR VA DASTURCHI",
+      bio:   "ORYX asoschi va dasturchisi. Mahsulotlarni boshidan oxirigacha quraman — vositachilarsiz.",
+      stats: [
+        { value: "4",   label: "Yil dasturlashda" },
+        { value: "15+", label: "Loyiha topshirilgan" },
+        { value: "3",   label: "Yo'nalishlar" },
+      ],
+      cta: "20 DAQIQALIK QONGIROQ",
+    },
+    contact: {
+      label:       "> BOG'LANISH",
+      headline:    ["Keling,", "quramiz."],
+      description: "Formani to'ldiring, 24 soat ichida javob beraman.",
+      labels: {
+        name:     "ISM",
+        phone:    "TELEFON RAQAMI",
+        telegram: "TELEGRAM",
+        service:  "NIMA KERAK",
+        message:  "XABAR",
+        optional: "IXTIYORIY",
+        required: "*",
+      },
+      placeholders: {
+        name:     "Ismingiz",
+        phone:    "+998 XX XXX XX XX",
+        telegram: "@username",
+        service:  "Xizmat tanlang",
+        message:  "Loyihangiz haqida aytib bering...",
+      },
+      services: [
+        "Veb-sayt / Landing Page",
+        "Mobil Ilova",
+        "CRM / ERP Tizimi",
+        "AI Avtomatizatsiya",
+        "Boshqa",
+      ],
+      submit:   "YUBORISH",
+      sending:  "YUBORILMOQDA...",
+      success: {
+        title:   "Xabar yuborildi.",
+        message: "24 soat ichida javob beraman.",
+      },
+      error: "Xatolik yuz berdi. Qayta urinib ko'ring.",
     },
   },
 };
