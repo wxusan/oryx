@@ -18,19 +18,31 @@ const LanguageContext = createContext<LanguageContextValue>({
 function detectLang(): Lang {
   if (typeof window === "undefined") return "en";
   const saved = localStorage.getItem("oryx-lang") as Lang | null;
-  if (saved === "en" || saved === "ru") return saved;
+  if (saved === "en" || saved === "ru" || saved === "uz") return saved;
   const nav = navigator.language || "";
   if (nav.startsWith("uz")) return "uz";
   if (nav.startsWith("ru")) return "ru";
   return "en";
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("en");
+interface LanguageProviderProps {
+  children: ReactNode;
+  /**
+   * Pin the language for this tree — used by /ru and /uz routes so the
+   * server-rendered HTML is already in the correct language instead of
+   * defaulting to English and switching on the client.
+   */
+  initialLang?: Lang;
+}
+
+export function LanguageProvider({ children, initialLang }: LanguageProviderProps) {
+  const [lang, setLangState] = useState<Lang>(initialLang ?? "en");
 
   useEffect(() => {
+    // If a language is pinned (e.g. /ru route) don't override it from localStorage.
+    if (initialLang) return;
     setLangState(detectLang());
-  }, []);
+  }, [initialLang]);
 
   const setLang = (l: Lang) => {
     setLangState(l);
