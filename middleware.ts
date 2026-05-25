@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+<<<<<<< HEAD
 const COOKIE       = "oryx-lang";
 const COOKIE_TTL   = 60 * 60 * 24 * 365; // 1 year
 const BOT_RE       = /bot|crawl|spider|slurp|googlebot|bingbot|yandex|baidu|gpt|chatgpt|claude|perplexity|ccbot|facebookexternalhit|linkedinbot|twitterbot|applebot/i;
@@ -20,10 +21,16 @@ function detectLang(header: string): "ru" | "uz" | null {
   }
   return null;
 }
+=======
+// Common bot/crawler user-agent patterns — Googlebot must NOT be redirected
+const BOT_UA =
+  /bot|crawl|slurp|spider|mediapartners|google|baidu|bing|msn|duckduckgo|teoma|yandex|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest|developers\.google\.com/i;
+>>>>>>> ed705e0 (feat: URL-based i18n routing — / (uz), /en, /ru)
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+<<<<<<< HEAD
   // ── Bots: never redirect — let them crawl every URL unmodified ──────────────
   const ua = req.headers.get("user-agent") ?? "";
   if (BOT_RE.test(ua)) return NextResponse.next();
@@ -61,10 +68,34 @@ export function middleware(req: NextRequest) {
   }
 
   // 3. Default: stay on / (English)
+=======
+  // Only intercept the root path
+  if (pathname !== "/") return NextResponse.next();
+
+  // Never redirect bots — they must crawl all three URLs freely
+  const ua = req.headers.get("user-agent") ?? "";
+  if (BOT_UA.test(ua)) return NextResponse.next();
+
+  // Cookie-based redirect only
+  const cookie = req.cookies.get("oryx-lang")?.value;
+  if (cookie === "en") {
+    return NextResponse.redirect(new URL("/en", req.url));
+  }
+  if (cookie === "ru") {
+    return NextResponse.redirect(new URL("/ru", req.url));
+  }
+
+  // No cookie → stay on "/" and serve Uzbek
+>>>>>>> ed705e0 (feat: URL-based i18n routing — / (uz), /en, /ru)
   return NextResponse.next();
 }
 
 export const config = {
+<<<<<<< HEAD
   // Only run on the three language routes — nothing else
   matcher: ["/", "/ru", "/uz"],
+=======
+  // Only run on the root path; skip all static assets and API routes
+  matcher: ["/"],
+>>>>>>> ed705e0 (feat: URL-based i18n routing — / (uz), /en, /ru)
 };
