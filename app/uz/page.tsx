@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { OryxLanding } from "@/components/OryxLanding";
 
-const SITE = "https://oryx-flame.vercel.app";
+const SITE = "https://oryx.uz";
 
 const BOT_RE = /bot|crawl|spider|slurp|googlebot|bingbot|yandex|baidu|gpt|chatgpt|claude|perplexity|ccbot|facebookexternalhit|linkedinbot|twitterbot|applebot|semrush|ahrefsbot|mj12bot/i;
 
