@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -17,7 +18,7 @@ export function About() {
       id="about"
       className="relative overflow-hidden bg-[#020202]"
       style={{ minHeight: "90vh" }}
-      aria-label="About Xusan Ibragimov"
+      aria-label="About Xusan Ibragimov — founder of ORYX digital product studio"
     >
       {/* Grid */}
       <div aria-hidden className="pointer-events-none absolute inset-0" style={{
@@ -49,18 +50,20 @@ export function About() {
               Xusan<br />Ibragimov
             </motion.h2>
 
-            {/* Mobile-only portrait — hidden on desktop (photo panel handles it) */}
+            {/* Mobile-only portrait */}
             <motion.div
               className="lg:hidden shrink-0 overflow-hidden rounded-sm"
-              style={{ width: "110px", height: "140px", border: "1px solid rgba(255,255,255,0.1)" }}
+              style={{ width: "110px", height: "140px", position: "relative", border: "1px solid rgba(255,255,255,0.1)" }}
               initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.14, ease }}
             >
-              <img
+              <Image
                 src="/xusan.jpg"
-                alt="Xusan Ibragimov"
-                className="h-full w-full object-cover object-bottom"
-                style={{ filter: "brightness(0.78) contrast(1.06) saturate(0.82)", imageOrientation: "none" }}
+                alt="Xusan Ibragimov, CEO and founder of ORYX digital product studio in Tashkent"
+                fill
+                sizes="110px"
+                className="object-cover object-bottom"
+                style={{ filter: "brightness(0.78) contrast(1.06) saturate(0.82)" }}
               />
             </motion.div>
           </div>
@@ -79,7 +82,6 @@ export function About() {
             style={{ height: "1px", background: "rgba(255,255,255,0.07)", marginBottom: "36px" }}
           />
 
-          {/* One punchy line */}
           <motion.p
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.28, ease }}
@@ -128,14 +130,17 @@ export function About() {
           initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1, delay: 0.08, ease }}
         >
-          <img
+          <Image
             src="/xusan.jpg"
-            alt="Xusan Ibragimov"
-            className="absolute inset-0 h-full w-full object-cover object-bottom"
-            style={{ filter: "brightness(0.72) contrast(1.08) saturate(0.78)", imageOrientation: "none" }}
+            alt="Xusan Ibragimov, founder and software engineer at ORYX — digital product studio Tashkent"
+            fill
+            sizes="50vw"
+            className="object-cover object-bottom"
+            style={{ filter: "brightness(0.72) contrast(1.08) saturate(0.78)" }}
+            priority={false}
           />
 
-          {/* Left fade into section bg */}
+          {/* Left fade */}
           <div className="absolute inset-0" style={{
             background: "linear-gradient(90deg,#020202 0%,rgba(2,2,2,0.4) 30%,transparent 60%)",
           }} />
