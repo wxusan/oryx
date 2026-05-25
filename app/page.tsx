@@ -1,11 +1,23 @@
-import { headers } from "next/headers";
+import type { Metadata } from "next";
 import { OryxLanding } from "@/components/OryxLanding";
 
-const BOT_RE = /bot|crawl|spider|slurp|googlebot|bingbot|yandex|baidu|gpt|chatgpt|claude|perplexity|ccbot|facebookexternalhit|linkedinbot|twitterbot|applebot|semrush|ahrefsbot|mj12bot/i;
+const BASE_URL = "https://oryx.uz";
 
-export default async function Home() {
-  const headersList = await headers();
-  const ua     = headersList.get("user-agent") ?? "";
-  const isBot  = BOT_RE.test(ua);
-  return <OryxLanding isBot={isBot} />;
+export const metadata: Metadata = {
+  title: "ORYX — Raqamli mahsulot studiyasi",
+  description:
+    "Veb-saytlar, MVP, avtomatizatsiya va AI tizimlari uchun raqamli mahsulot studiyasi.",
+  alternates: {
+    canonical: `${BASE_URL}/`,
+    languages: {
+      uz:          `${BASE_URL}/`,
+      en:          `${BASE_URL}/en`,
+      ru:          `${BASE_URL}/ru`,
+      "x-default": `${BASE_URL}/`,
+    },
+  },
+};
+
+export default function Home() {
+  return <OryxLanding lang="uz" />;
 }
