@@ -60,7 +60,7 @@ const faqData: Record<Lang, { heading: string; sub: string; back: string; items:
       },
       {
         q: "How do I contact ORYX?",
-        a: "You can contact us via the form at https://oryx-flame.vercel.app/#contact. Fill in your name, phone, and what you need, and we will respond within 24 hours. You can also reach us on Telegram.",
+        a: "You can contact us via the form at https://oryx.uz/#contact. Fill in your name, phone, and what you need, and we will respond within 24 hours. You can also reach us on Telegram.",
       },
       {
         q: "What makes ORYX different from other agencies?",
@@ -115,7 +115,7 @@ const faqData: Record<Lang, { heading: string; sub: string; back: string; items:
       },
       {
         q: "Как связаться с ORYX?",
-        a: "Через форму на https://oryx-flame.vercel.app/#contact. Заполните имя, телефон и что вам нужно — ответим в течение 24 часов. Также можно написать в Telegram.",
+        a: "Через форму на https://oryx.uz/#contact. Заполните имя, телефон и что вам нужно — ответим в течение 24 часов. Также можно написать в Telegram.",
       },
       {
         q: "Чем ORYX отличается от других агентств?",
@@ -170,7 +170,7 @@ const faqData: Record<Lang, { heading: string; sub: string; back: string; items:
       },
       {
         q: "ORYX bilan qanday bog'lanish mumkin?",
-        a: "https://oryx-flame.vercel.app/#contact saytidagi forma orqali. Ismingizni, telefoningizni va nima kerakligini to'ldiring — 24 soat ichida javob beramiz. Telegram orqali ham murojaat qilishingiz mumkin.",
+        a: "https://oryx.uz/#contact saytidagi forma orqali. Ismingizni, telefoningizni va nima kerakligini to'ldiring — 24 soat ichida javob beramiz. Telegram orqali ham murojaat qilishingiz mumkin.",
       },
       {
         q: "ORYX boshqa agentliklardan nimasi bilan farq qiladi?",
