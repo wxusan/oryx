@@ -82,7 +82,7 @@ export function About() {
                 fill
                 sizes="110px"
                 className="object-cover"
-                style={{ objectPosition: "50% 20%", filter: "brightness(1.0) contrast(1.02) saturate(0)" }}
+                style={{ objectPosition: "50% 0%", filter: "brightness(1.0) contrast(1.02) saturate(0)" }}
               />
             </motion.div>
           </div>
@@ -173,7 +173,7 @@ export function About() {
             fill
             sizes="50vw"
             className="object-cover"
-            style={{ objectPosition: "50% 25%", filter: "brightness(1.0) contrast(1.02) saturate(0)" }}
+            style={{ objectPosition: "50% 0%", filter: "brightness(1.0) contrast(1.02) saturate(0)" }}
             priority={false}
           />
 
