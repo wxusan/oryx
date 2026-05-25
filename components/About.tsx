@@ -172,16 +172,16 @@ export function About() {
             alt="Xusan Ibragimov, founder and CEO of ORYX digital product studio, Tashkent"
             fill
             sizes="50vw"
-            className="object-cover object-top"
-            style={{ filter: "brightness(0.78) contrast(1.05) saturate(0)" }}
+            className="object-cover"
+            style={{ objectPosition: "center 12%", filter: "brightness(0.92) contrast(1.04) saturate(0)" }}
             priority={false}
           />
 
           {/* Left fade */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(90deg,#020202 0%,rgba(2,2,2,0.35) 28%,transparent 55%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(90deg,#020202 0%,rgba(2,2,2,0.25) 22%,transparent 45%)" }} />
 
           {/* Bottom fade */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(0deg,rgba(2,2,2,0.55) 0%,transparent 30%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(0deg,rgba(2,2,2,0.4) 0%,transparent 22%)" }} />
 
           {/* Floating studio tag — top right */}
           <motion.div
