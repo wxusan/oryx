@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 
-const SITE = "https://oryx-flame.vercel.app";
+const SITE = "https://oryx.uz";
 
 export const metadata: Metadata = {
   title: "Madami.uz — E-commerce Platform | ORYX Case Study",
