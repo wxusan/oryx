@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { OryxLanding } from "@/components/OryxLanding";
 
 const SITE = "https://oryx.uz";
-
-const BOT_RE = /bot|crawl|spider|slurp|googlebot|bingbot|yandex|baidu|gpt|chatgpt|claude|perplexity|ccbot|facebookexternalhit|linkedinbot|twitterbot|applebot|semrush|ahrefsbot|mj12bot/i;
 
 export const metadata: Metadata = {
   title: "ORYX — Студия цифровых продуктов в Ташкенте | Сайты, приложения, CRM, ИИ",
@@ -27,13 +24,15 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: `${SITE}/ru`,
-    languages: { en: `${SITE}/`, ru: `${SITE}/ru`, uz: `${SITE}/uz` },
+    languages: {
+      uz:          `${SITE}/`,
+      en:          `${SITE}/en`,
+      ru:          `${SITE}/ru`,
+      "x-default": `${SITE}/`,
+    },
   },
 };
 
-export default async function RuHome() {
-  const headersList = await headers();
-  const ua    = headersList.get("user-agent") ?? "";
-  const isBot = BOT_RE.test(ua);
-  return <OryxLanding isBot={isBot} defaultLang="ru" />;
+export default function RussianPage() {
+  return <OryxLanding lang="ru" />;
 }
