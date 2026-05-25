@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const SITE = "https://oryx-flame.vercel.app";
+const SITE = "https://oryx.uz";
 
 export const metadata: Metadata = {
   title: "Blog — Web Development & Digital Products | ORYX",
