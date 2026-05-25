@@ -1,5 +1,5 @@
 # ORYX — robots.txt
-# https://oryx-flame.vercel.app
+# https://oryx.uz
 
 # Standard crawlers
 User-agent: *
@@ -48,7 +48,7 @@ User-agent: Bingbot
 Allow: /
 
 # Sitemap
-Sitemap: https://oryx-flame.vercel.app/sitemap.xml
+Sitemap: https://oryx.uz/sitemap.xml
 
 # llms.txt (AI-readable site description)
-# https://oryx-flame.vercel.app/llms.txt
+# https://oryx.uz/llms.txt
