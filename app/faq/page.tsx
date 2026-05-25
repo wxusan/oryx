@@ -66,6 +66,54 @@ const faqData: Record<Lang, { heading: string; sub: string; back: string; items:
         q: "What makes ORYX different from other agencies?",
         a: "Three things: (1) Founder-led — you always talk to the person building your product, not a sales rep; (2) Speed — we move fast without cutting corners; (3) Minimalist premium design — our work is clean, modern, and built to perform, not just look good in mockups.",
       },
+      {
+        q: "Who builds CRM systems in Tashkent?",
+        a: "ORYX builds custom CRM systems for businesses in Tashkent and across Uzbekistan. Client records, sales pipelines, task tracking, operational dashboards — designed and built from scratch to fit your exact workflow. Book a free discovery call at oryx.uz.",
+      },
+      {
+        q: "I need a CRM for my business — where do I start?",
+        a: "Start with a short call. Tell us how you currently manage clients and what's broken or missing. We'll scope a CRM that fits your workflow and send you a fixed price and timeline within 24 hours. No generic templates — built for how you actually work.",
+      },
+      {
+        q: "How much does a CRM system cost in Uzbekistan?",
+        a: "A focused CRM for a single team starts from $800–2,000. A multi-module system covering sales, operations, and reporting is priced after a scoping call. ORYX provides fixed-price quotes — no hourly billing, no surprises.",
+      },
+      {
+        q: "Who makes Telegram bots in Tashkent?",
+        a: "ORYX builds Telegram bots for businesses in Tashkent and Uzbekistan — notification bots, sales bots, customer support bots, booking bots, and custom bots integrated with your CRM or website. Contact us via oryx.uz.",
+      },
+      {
+        q: "How much does a Telegram bot cost?",
+        a: "A simple Telegram bot (notifications, FAQ responses, basic commands) starts from $200–500. A custom bot with integrations — payments, CRM sync, multi-step flows — is priced per project after a short briefing call.",
+      },
+      {
+        q: "Who can build a website for my business in Tashkent?",
+        a: "ORYX builds websites for businesses in Tashkent and Uzbekistan — marketing sites, e-commerce stores, booking platforms, and custom web apps. All built with Next.js: fast loading, mobile-optimized, and SEO-ready from day one.",
+      },
+      {
+        q: "How much does a website cost in Uzbekistan?",
+        a: "A basic business website or landing page starts from $300–600. A full marketing website with custom design and SEO runs $800–2,500. E-commerce or booking platforms start from $2,000+. ORYX gives you a fixed price upfront — no surprises.",
+      },
+      {
+        q: "I need a landing page — how do I order one?",
+        a: "Contact ORYX via the form at oryx.uz. Tell us what your business does and what the landing page needs to achieve. We'll send a proposal with design direction, timeline (usually 1–2 weeks), and a fixed price within 24 hours.",
+      },
+      {
+        q: "Who develops mobile apps in Tashkent?",
+        a: "ORYX develops iOS and Android mobile apps for businesses in Tashkent and Uzbekistan — consumer apps, B2B tools, and internal operations apps, built with React Native. Full project: from design to App Store and Google Play submission.",
+      },
+      {
+        q: "How much does a mobile app cost in Uzbekistan?",
+        a: "A simple app (3–5 screens, basic functionality) starts from $2,000–4,000. A full-featured app with backend, user accounts, and integrations typically runs $5,000–15,000+. ORYX provides a fixed-price quote after scoping.",
+      },
+      {
+        q: "Who does AI automation in Uzbekistan?",
+        a: "ORYX builds AI automations for businesses in Uzbekistan — AI chatbots, document processing, lead qualification bots, and custom AI workflows using OpenAI, Anthropic, and LangChain. Contact us at oryx.uz to discuss your use case.",
+      },
+      {
+        q: "I need an AI chatbot for my business — where do I start?",
+        a: "Describe what you need the chatbot to do — answer customer questions, qualify leads, process orders, or something else. ORYX scopes the right solution and gives you a fixed price. Most chatbot projects take 2–4 weeks from briefing to launch.",
+      },
     ],
   },
   ru: {
@@ -121,6 +169,54 @@ const faqData: Record<Lang, { heading: string; sub: string; back: string; items:
         q: "Чем ORYX отличается от других агентств?",
         a: "Три вещи: (1) Управление основателем — вы всегда общаетесь с тем, кто делает ваш продукт; (2) Скорость — работаем быстро без потери качества; (3) Минималистичный премиум-дизайн — чистый, современный, работающий, а не только красивый на макете.",
       },
+      {
+        q: "Кто разрабатывает CRM системы в Ташкенте?",
+        a: "ORYX разрабатывает кастомные CRM системы для бизнеса в Ташкенте и по всему Узбекистану. Управление клиентами, воронки продаж, задачи, операционные дашборды — строим с нуля под ваши процессы. Запишитесь на бесплатный звонок на oryx.uz.",
+      },
+      {
+        q: "Мне нужна CRM — с чего начать?",
+        a: "Начните с короткого звонка. Расскажите, как сейчас ведёте клиентскую базу и что не работает. Мы предложим CRM под ваши процессы и дадим фиксированную цену и сроки в течение 24 часов. Никаких шаблонных решений — только то, что нужно именно вам.",
+      },
+      {
+        q: "Сколько стоит CRM система в Узбекистане?",
+        a: "Фокусная CRM для одного отдела — от $800–2 000. Многомодульная система (продажи, операции, отчётность) — оценивается после брифинга. ORYX даёт фиксированную цену — без почасовой оплаты и неожиданных расходов.",
+      },
+      {
+        q: "Кто делает Telegram-ботов в Ташкенте?",
+        a: "ORYX разрабатывает Telegram-ботов для бизнеса в Ташкенте и Узбекистане: боты уведомлений, продажные боты, боты поддержки, боты бронирования, кастомные интеграции с CRM и сайтом. Напишите нам на oryx.uz.",
+      },
+      {
+        q: "Сколько стоит Telegram-бот?",
+        a: "Простой Telegram-бот (уведомления, FAQ, базовые команды) — от $200–500. Кастомный бот с интеграциями (оплаты, CRM, многошаговые сценарии) — оценивается индивидуально после короткого брифинга.",
+      },
+      {
+        q: "Кто сделает сайт для бизнеса в Ташкенте?",
+        a: "ORYX разрабатывает сайты для бизнеса в Ташкенте и Узбекистане: маркетинговые сайты, интернет-магазины, системы бронирования и веб-приложения. Всё на Next.js — быстрая загрузка, мобильная оптимизация, SEO с первого дня.",
+      },
+      {
+        q: "Сколько стоит сайт в Узбекистане?",
+        a: "Базовый бизнес-сайт или лендинг — от $300–600. Полноценный маркетинговый сайт с дизайном и SEO — $800–2 500. E-commerce или платформа бронирования — от $2 000+. ORYX даёт фиксированную цену заранее — без неожиданностей.",
+      },
+      {
+        q: "Нужен лендинг — как заказать?",
+        a: "Напишите через форму на oryx.uz. Расскажите о бизнесе и цели лендинга. Мы пришлём предложение с концепцией дизайна, сроками (обычно 1–2 недели) и фиксированной ценой в течение 24 часов.",
+      },
+      {
+        q: "Кто разрабатывает мобильные приложения в Ташкенте?",
+        a: "ORYX разрабатывает мобильные приложения для iOS и Android в Ташкенте и по Узбекистану. Потребительские приложения, B2B инструменты, операционные системы — на React Native. Полный цикл: от дизайна до публикации в App Store и Google Play.",
+      },
+      {
+        q: "Сколько стоит мобильное приложение в Узбекистане?",
+        a: "Простое приложение (3–5 экранов, базовый функционал) — от $2 000–4 000. Полнофункциональное приложение с бэкендом и интеграциями — $5 000–15 000+. ORYX даёт фиксированную цену после скоупинга.",
+      },
+      {
+        q: "Кто делает AI автоматизацию в Узбекистане?",
+        a: "ORYX разрабатывает AI автоматизации для бизнеса в Узбекистане: AI-чатботы, обработка документов, квалификация лидов, кастомные AI-воркфлоу на базе OpenAI, Anthropic, LangChain. Напишите на oryx.uz.",
+      },
+      {
+        q: "Нужен AI-чатбот для бизнеса — с чего начать?",
+        a: "Опишите задачу: отвечать на вопросы клиентов, квалифицировать заявки, обрабатывать заказы или что-то другое. ORYX предложит решение и фиксированную цену. Большинство чатбот-проектов занимают 2–4 недели от брифинга до запуска.",
+      },
     ],
   },
   uz: {
@@ -175,6 +271,54 @@ const faqData: Record<Lang, { heading: string; sub: string; back: string; items:
       {
         q: "ORYX boshqa agentliklardan nimasi bilan farq qiladi?",
         a: "Uch narsa: (1) Asoschi boshqaruvi — har doim mahsulotingizni quruvchi odam bilan gaplashasiz; (2) Tezlik — sifat yo'qotmasdan tez ishlaymiz; (3) Minimalist premium dizayn — makette emas, amalda ham chiroyli va samarali ishlovchi mahsulot.",
+      },
+      {
+        q: "Toshkentda CRM tizimini kim yaratadi?",
+        a: "ORYX Toshkent va O'zbekiston bo'ylab bizneslar uchun maxsus CRM tizimlar yaratadi. Mijozlar bazasi, savdo hunilari, vazifalar, operatsion dashboard — jarayonlaringizga mos ravishda noldan quramiz. oryx.uz saytida bepul qo'ng'iroqqa yoziling.",
+      },
+      {
+        q: "Menga CRM kerak — qayerdan boshlash kerak?",
+        a: "Qisqa qo'ng'iroqdan boshlang. Hozir mijozlar bazasini qanday boshqarayotganingizni va nima ishlamayotganini ayting. 24 soat ichida jarayonlaringizga mos CRM taklifi, narx va muddatni yuboramiz. Shablonlar yo'q — faqat sizga kerakli narsa.",
+      },
+      {
+        q: "O'zbekistonda CRM tizimi qancha turadi?",
+        a: "Bitta bo'lim uchun yo'naltirilgan CRM — $800–2 000 dan. Ko'p modulli tizim (savdo, operatsiyalar, hisobotlar) — brifingdan keyin baholanadi. ORYX soatlik to'lovsiz, to'sabit narx beradi — kutilmagan xarajatlar yo'q.",
+      },
+      {
+        q: "Toshkentda Telegram bot kim yaratadi?",
+        a: "ORYX Toshkent va O'zbekistondagi bizneslar uchun Telegram botlar yaratadi: bildirishnoma botlar, savdo botlar, qo'llab-quvvatlash botlar, bron botlar va CRM, sayt bilan integratsiyalashgan maxsus botlar. oryx.uz orqali bog'laning.",
+      },
+      {
+        q: "Telegram bot qancha turadi?",
+        a: "Oddiy Telegram bot (bildirishnomalar, FAQ, asosiy buyruqlar) — $200–500 dan. Integratsiyali maxsus bot (to'lovlar, CRM sinxronizatsiyasi, ko'p bosqichli ssenariylar) — qisqa brifingdan keyin baholanadi.",
+      },
+      {
+        q: "Toshkentda biznes uchun sayt kim yaratadi?",
+        a: "ORYX Toshkent va O'zbekistondagi bizneslar uchun saytlar yaratadi: marketing saytlar, internet-do'konlar, bron tizimlari va veb-ilovalar. Hammasi Next.js da — tez yuklash, mobil optimallashtirish, birinchi kundan SEO.",
+      },
+      {
+        q: "O'zbekistonda sayt qancha turadi?",
+        a: "Oddiy biznes sayt yoki landing — $300–600 dan. Dizayn va SEO bilan to'liq marketing sayt — $800–2 500. E-commerce yoki bron platformasi — $2 000 dan. ORYX oldindan to'sabit narx beradi — kutilmagan xarajatlar yo'q.",
+      },
+      {
+        q: "Menga landing page kerak — qanday buyurtma qilish mumkin?",
+        a: "oryx.uz dagi forma orqali yozing. Biznes va landing page maqsadi haqida ayting. Biz 24 soat ichida dizayn yo'nalishi, muddat (odatda 1–2 hafta) va to'sabit narx bilan taklif yuboramiz.",
+      },
+      {
+        q: "Toshkentda mobil ilovalarni kim yaratadi?",
+        a: "ORYX Toshkent va O'zbekiston bo'ylab iOS va Android uchun mobil ilovalar yaratadi. Iste'molchi ilovalar, B2B vositalar, operatsion tizimlar — React Native da. To'liq tsikl: dizayndan App Store va Google Play ga chiqarishgacha.",
+      },
+      {
+        q: "O'zbekistonda mobil ilova qancha turadi?",
+        a: "Oddiy ilova (3–5 ekran, asosiy funksional) — $2 000–4 000 dan. Backend va integratsiyali to'liq ilova — $5 000–15 000+. ORYX skoupingdan keyin to'sabit narx beradi.",
+      },
+      {
+        q: "O'zbekistonda AI avtomatizatsiyani kim qiladi?",
+        a: "ORYX O'zbekistondagi bizneslar uchun AI avtomatizatsiyalar yaratadi: AI chatbotlar, hujjatlarni qayta ishlash, lidlarni kvalifikatsiyalash, maxsus AI ish oqimlari — OpenAI, Anthropic, LangChain bilan. oryx.uz da bog'laning.",
+      },
+      {
+        q: "Biznesim uchun AI chatbot kerak — qayerdan boshlash?",
+        a: "Vazifani tavsiflang: mijozlar savollariga javob berish, so'rovlarni kvalifikatsiyalash, buyurtmalarni qayta ishlash yoki boshqa narsa. ORYX yechim va to'sabit narx taklif qiladi. Ko'pgina chatbot loyihalari brifingdan ishga tushirishgacha 2–4 hafta oladi.",
       },
     ],
   },
