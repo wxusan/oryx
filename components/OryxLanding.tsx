@@ -11,26 +11,16 @@ import { Contact } from "@/components/Contact";
 import type { Lang } from "@/lib/translations";
 
 interface OryxLandingProps {
-  /**
-   * When true (crawlers / bots detected server-side) the intro loader is
-   * skipped entirely so the full page content is visible in the first render.
-   */
-  isBot?: boolean;
-  /**
-   * Pin the initial language — used by /ru and /uz routes so content is
-   * server-rendered in the correct language without waiting for localStorage.
-   */
-  defaultLang?: Lang;
+  lang: Lang;
 }
 
-export function OryxLanding({ isBot = false, defaultLang }: OryxLandingProps) {
-  // Bots get loaderDone=true immediately → no loader, content visible at once.
-  const [loaderDone, setLoaderDone] = useState(isBot);
+export function OryxLanding({ lang }: OryxLandingProps) {
+  const [loaderDone, setLoaderDone] = useState(false);
 
   return (
-    <LanguageProvider initialLang={defaultLang}>
+    <LanguageProvider lang={lang}>
       <main className="min-h-screen bg-oryx-black text-oryx-white">
-        {!isBot && <IntroLoader onComplete={() => setLoaderDone(true)} />}
+        <IntroLoader onComplete={() => setLoaderDone(true)} />
         <Hero active={loaderDone} />
         <BuildStack />
         <Work />
