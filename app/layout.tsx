@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
@@ -141,6 +142,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
         {children}
         <GoogleAnalytics gaId="G-E5NDB2Q2FH" />
+        {/* Microsoft Clarity — loads after page is interactive, non-blocking */}
+        <Script id="microsoft-clarity" strategy="afterInteractive">{`
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "wwqri096e1");
+        `}</Script>
       </body>
     </html>
   );
