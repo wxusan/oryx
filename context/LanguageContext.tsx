@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import t, { type Lang, type Translations } from "@/lib/translations";
 
 interface LanguageContextValue {
@@ -10,43 +11,30 @@ interface LanguageContextValue {
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
-  lang: "en",
+  lang: "uz",
   setLang: () => {},
-  tr: t.en,
+  tr: t.uz,
 });
 
-function detectLang(): Lang {
-  if (typeof window === "undefined") return "en";
-  const saved = localStorage.getItem("oryx-lang") as Lang | null;
-  if (saved === "en" || saved === "ru" || saved === "uz") return saved;
-  const nav = navigator.language || "";
-  if (nav.startsWith("uz")) return "uz";
-  if (nav.startsWith("ru")) return "ru";
-  return "en";
-}
-
 interface LanguageProviderProps {
+  lang: Lang;
   children: ReactNode;
-  /**
-   * Pin the language for this tree — used by /ru and /uz routes so the
-   * server-rendered HTML is already in the correct language instead of
-   * defaulting to English and switching on the client.
-   */
-  initialLang?: Lang;
 }
 
-export function LanguageProvider({ children, initialLang }: LanguageProviderProps) {
-  const [lang, setLangState] = useState<Lang>(initialLang ?? "en");
-
-  useEffect(() => {
-    // If a language is pinned (e.g. /ru route) don't override it from localStorage.
-    if (initialLang) return;
-    setLangState(detectLang());
-  }, [initialLang]);
+export function LanguageProvider({ lang, children }: LanguageProviderProps) {
+  const router = useRouter();
 
   const setLang = (l: Lang) => {
-    setLangState(l);
-    localStorage.setItem("oryx-lang", l);
+    // Persist preference as cookie so middleware can redirect on next "/" visit
+    const oneYear = 60 * 60 * 24 * 365;
+    document.cookie = `oryx-lang=${l}; path=/; max-age=${oneYear}; SameSite=Lax`;
+
+    // Navigate to the canonical URL for the chosen language
+    if (l === "uz") {
+      router.push("/");
+    } else {
+      router.push(`/${l}`);
+    }
   };
 
   return (
