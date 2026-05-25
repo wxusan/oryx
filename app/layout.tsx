@@ -42,9 +42,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE,
     languages: {
-      "en": `${SITE}/`,
-      "ru": `${SITE}/ru`,
-      "uz": `${SITE}/uz`,
+      uz:          `${SITE}/`,
+      en:          `${SITE}/en`,
+      ru:          `${SITE}/ru`,
+      "x-default": `${SITE}/`,
     },
   },
   icons: {
@@ -121,14 +122,15 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    // Default language is Uzbek. Nested /en and /ru layouts override via LangSetter.
+    <html lang="uz">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-        {/* hreflang — multilingual signals */}
-        <link rel="alternate" hrefLang="en"       href={`${SITE}/`} />
-        <link rel="alternate" hrefLang="ru"       href={`${SITE}/ru`} />
-        <link rel="alternate" hrefLang="uz"       href={`${SITE}/uz`} />
+        {/* hreflang — multilingual signals (/ = UZ default, /en = EN, /ru = RU) */}
+        <link rel="alternate" hrefLang="uz"        href={`${SITE}/`} />
+        <link rel="alternate" hrefLang="en"        href={`${SITE}/en`} />
+        <link rel="alternate" hrefLang="ru"        href={`${SITE}/ru`} />
         <link rel="alternate" hrefLang="x-default" href={`${SITE}/`} />
 
         {/* Hero image preloads */}
