@@ -165,7 +165,7 @@ function JsonLd({ lang }: { lang: Lang }) {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "ORYX",
-    url: "https://oryx-flame.vercel.app",
+    url: "https://oryx.uz",
     description:
       "Founder-led digital product studio in Tashkent. Websites, mobile apps, CRM/ERP systems, and AI automations.",
     aggregateRating: {
