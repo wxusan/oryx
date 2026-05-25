@@ -1,9 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 
+const LANG_PATHS = { en: "/", ru: "/ru", uz: "/uz" } as const;
+
 export function LanguageSwitcher() {
-  const { lang, setLang } = useLanguage();
+  const { lang } = useLanguage();
+  const router   = useRouter();
 
   return (
     <div className="flex items-center gap-1" style={{ fontFamily: "var(--font-jetbrains),monospace" }}>
@@ -15,7 +19,7 @@ export function LanguageSwitcher() {
             </span>
           )}
           <button
-            onClick={() => setLang(l)}
+            onClick={() => router.push(LANG_PATHS[l])}
             style={{
               fontSize: "10px",
               letterSpacing: "0.18em",
