@@ -50,7 +50,7 @@ export function GET(req: NextRequest) {
         {/* Bottom */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <span style={{ fontSize: "14px", color: "#3a3a40", letterSpacing: "0.12em" }}>
-            oryx-flame.vercel.app
+            oryx.uz
           </span>
           <div style={{ display: "flex", gap: "8px" }}>
             {["Websites", "Mobile Apps", "CRM / ERP", "AI"].map((tag) => (
