@@ -1,5 +1,14 @@
 [
   {
+    "id": "sub_1783409561576_487rp1",
+    "createdAt": "2026-07-07T07:32:41.576Z",
+    "name": "http://localhost:6379/GET/session:admin",
+    "phone": "test",
+    "telegram": "test",
+    "service": "test",
+    "message": "test"
+  },
+  {
     "id": "sub_1783409519152_lze0cj",
     "createdAt": "2026-07-07T07:31:59.152Z",
     "name": "{\"$ne\": null}",
