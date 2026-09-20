@@ -121,9 +121,7 @@ export function Contact() {
                 {tr.contact.labels.telegram}
               </span>
               <a
-                href="https://t.me/+8188038518"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="tg://user?id=8188038518"
                 style={{ fontSize: "13px", color: "#9b9ba0", fontFamily: "var(--font-jetbrains),monospace", textDecoration: "none", transition: "color 0.2s" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "#f6f6f7")}
                 onMouseLeave={e => (e.currentTarget.style.color = "#9b9ba0")}

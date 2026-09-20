@@ -108,7 +108,7 @@ const jsonLd = {
         reviewCount: "113",
         bestRating: "5",
       },
-      sameAs: ["https://t.me/+8188038518"],
+      sameAs: ["tg://user?id=8188038518"],
     },
     {
       "@type": "WebSite",
